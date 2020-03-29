@@ -1,7 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Date;
 
 @Entity
 @Table(name="HistoriaVidaVideo")
@@ -48,7 +48,7 @@ public class HistoriaVidaVideo {
     }
 
     public Date getFecha() {
-        return fecha;
+        return this.fecha;
     }
 
     public void setFecha(Date fecha) {
