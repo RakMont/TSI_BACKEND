@@ -24,6 +24,7 @@ public class HistoriaVidaVideoController {
 
     @PostMapping
     public HistoriaVidaVideo agregar(@RequestBody HistoriaVidaVideo p) {
+
         return historiaVidaVideoService.agregar(p);
     }
 
