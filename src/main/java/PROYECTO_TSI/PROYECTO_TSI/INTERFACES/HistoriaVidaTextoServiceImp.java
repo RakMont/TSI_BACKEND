@@ -7,6 +7,8 @@ import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.MisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,12 +28,15 @@ public class HistoriaVidaTextoServiceImp implements HistoriaVidaTextoService  {
 
     @Override
     public HistoriaVidaTexto agregar(HistoriaVidaTexto p){
-
+        Date date = Date.valueOf(LocalDate.now());
+        p.setFecha(date);
         return historiaVidaTextoRepository.save(p);
     }
 
     @Override
     public HistoriaVidaTexto edit(HistoriaVidaTexto p){
+        Date date = Date.valueOf(LocalDate.now());
+        p.setFecha(date);
         return historiaVidaTextoRepository.save(p);
     }
 
