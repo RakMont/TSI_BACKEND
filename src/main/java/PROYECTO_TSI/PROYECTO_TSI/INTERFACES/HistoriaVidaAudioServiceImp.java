@@ -2,6 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaAudioRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaTextoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,10 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
 
     @Override
     public List<HistoriaVidaAudio> listar(){
+        List<HistoriaVidaAudio>list=historiaVidaAudioRepository.findAll();
+        for( HistoriaVidaAudio o:list){
+            System.out.println("date : "+o.getFecha());
+        }
         return historiaVidaAudioRepository.findAll();
     }
 
