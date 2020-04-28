@@ -5,6 +5,7 @@ import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaAudioService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaVideoService;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.TeOfrecemos;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -118,12 +119,28 @@ public class HistoriaVidaAudioController {
                 }
             }
         }
+
         return new ResponseEntity<List<String>>(historiaHVA,HttpStatus.OK);
     }
 
     @GetMapping
     public List<HistoriaVidaAudio> listar() {
-        return historiaVidaAudioService.listar();
+        List<HistoriaVidaAudio>list=historiaVidaAudioService.listar();
+        List<HistoriaVidaAudio> lista = new ArrayList<HistoriaVidaAudio>();
+        int aux=1;
+        int lenght=list.size();
+        System.out.println("the size is"+lenght);
+        for( HistoriaVidaAudio o:list){
+            //lista[lenght-1]=o;
+            //list.get(lenght-aux);
+            //System.out.println("the error is ");
+            lista.add(list.get(lenght-aux));
+            //lista.listIterator(lenght-aux).add(o);
+
+            aux++;
+        }
+        //return historiaVidaAudioService.listar();
+        return lista;
     }
 
     @PostMapping
