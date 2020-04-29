@@ -131,11 +131,8 @@ public class HistoriaVidaAudioController {
         int lenght=list.size();
         System.out.println("the size is"+lenght);
         for( HistoriaVidaAudio o:list){
-            //lista[lenght-1]=o;
-            //list.get(lenght-aux);
-            //System.out.println("the error is ");
+
             lista.add(list.get(lenght-aux));
-            //lista.listIterator(lenght-aux).add(o);
 
             aux++;
         }
