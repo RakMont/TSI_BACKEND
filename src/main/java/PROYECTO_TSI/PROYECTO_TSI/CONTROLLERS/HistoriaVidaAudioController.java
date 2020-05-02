@@ -47,7 +47,6 @@ public class HistoriaVidaAudioController {
     public ResponseEntity<Response> saveAudioFile(@RequestParam("file") MultipartFile file,@RequestParam("audio")String audio)throws JsonParseException, JsonMappingException, IOException
     {
         HistoriaVidaAudio historiaVidaAudio=new ObjectMapper().readValue(audio,HistoriaVidaAudio.class);
-        //historiaVidaAudio.setLogo(file.getBytes());
         historiaVidaAudio.setArchivo_mp3(file.getOriginalFilename());
         boolean isExist = new java.io.File(context.getRealPath("/historiaHVA/")).exists();
         if(!isExist){
@@ -78,6 +77,71 @@ public class HistoriaVidaAudioController {
 
         }
     }
+
+
+
+
+    @PostMapping(value = "UpdateAudioFile")
+    public ResponseEntity<Response> UpdateAudioFile(@RequestParam("file") MultipartFile file,@RequestParam("audio")String audio)throws JsonParseException, JsonMappingException, IOException
+    {
+        System.out.println("llega a la funcion");
+
+        HistoriaVidaAudio historiaVidaAudio=new ObjectMapper().readValue(audio,HistoriaVidaAudio.class);
+        System.out.println("llega a recibir los datos");
+        System.out.println("nombre anteior"+historiaVidaAudio.getArchivo_mp3());
+        System.out.println("nombre nuevo"+file.getOriginalFilename());
+
+        if (historiaVidaAudio.getArchivo_mp3().equals(file.getOriginalFilename()))
+        {
+            System.out.println("entra a imprimir el mismo");
+            historiaVidaAudioService.edit(historiaVidaAudio);
+            return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
+        }
+        else{
+            System.out.println("entra a eliminar");
+
+            String auxiliar = historiaVidaAudio.getArchivo_mp3();
+            File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
+            System.out.println("this is the name"+fileToDelete.getName());
+            fileToDelete.delete();
+
+            historiaVidaAudio.setArchivo_mp3(file.getOriginalFilename());
+
+            boolean isExist = new java.io.File(context.getRealPath("/historiaHVA/")).exists();
+            if(!isExist){
+                System.out.println("creating directory");
+                new java.io.File(context.getRealPath("/historiaHVA/")).mkdir();
+            }
+            String filename = file.getOriginalFilename();
+            String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
+            //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
+
+            File serverfile=new java.io.File(context.getRealPath("/historiaHVA/"+ java.io.File.separator+modifiedFilename));
+
+            try{
+                FileUtils.writeByteArrayToFile(serverfile,file.getBytes());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            historiaVidaAudio.setArchivo_mp3(modifiedFilename);
+
+            Date date = Date.valueOf(LocalDate.now());
+            historiaVidaAudio.setFecha(date);
+           // HistoriaVidaAudio historiaVidaAudio1=historiaVidaAudioService.agregar(historiaVidaAudio);
+            HistoriaVidaAudio historiaVidaAudio1= historiaVidaAudioService.edit(historiaVidaAudio);
+
+        }
+
+        if(historiaVidaAudio!=null){
+            return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
+
+        }else{
+            return new ResponseEntity<Response>(new Response("Audio not saved"), HttpStatus.BAD_REQUEST);
+
+        }
+    }
+
+
 
     @GetMapping(value = "/getHVAAudios")
     @CrossOrigin
