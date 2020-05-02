@@ -9,6 +9,7 @@ import PROYECTO_TSI.PROYECTO_TSI.MODELS.TeOfrecemos;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.catalina.session.FileStore;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -37,25 +41,7 @@ public class HistoriaVidaAudioController {
     @Autowired
     ServletContext context;
 
-/*
-    @PostMapping(value = "saveAudio")
-    public ResponseEntity<Response> saveAudio(@RequestParam("file") MultipartFile file,@RequestParam("audio")String audio)throws JsonParseException, JsonMappingException, IOException
-    {
-        HistoriaVidaAudio historiaVidaAudio=new ObjectMapper().readValue(audio,HistoriaVidaAudio.class);
-        historiaVidaAudio.setArchivo_mp3(file.getOriginalFilename());
-        Date date = Date.valueOf(LocalDate.now());
-        historiaVidaAudio.setFecha(date);
-        HistoriaVidaAudio historiaVidaAudio1=historiaVidaAudioService.agregar(historiaVidaAudio);
-        if(historiaVidaAudio!=null){
-            return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
 
-        }else{
-            return new ResponseEntity<Response>(new Response("Audio not saved"), HttpStatus.BAD_REQUEST);
-
-        }
-    }
-
-*/
 
     @PostMapping(value = "saveAudioFile")
     public ResponseEntity<Response> saveAudioFile(@RequestParam("file") MultipartFile file,@RequestParam("audio")String audio)throws JsonParseException, JsonMappingException, IOException
@@ -158,7 +144,10 @@ public class HistoriaVidaAudioController {
 
 
     @DeleteMapping(path = {"/{id}"})
-    public HistoriaVidaAudio delete(@PathVariable("id") int id){
+    public HistoriaVidaAudio delete(@PathVariable("id") int id)throws IOException{
+        /*Path fileToDeletePath = Paths.get("src/test/resources/fileToDelete_jdk7.txt");
+        Files.delete(fileToDeletePath);
+        */
         return historiaVidaAudioService.delete(id);
     }
 }

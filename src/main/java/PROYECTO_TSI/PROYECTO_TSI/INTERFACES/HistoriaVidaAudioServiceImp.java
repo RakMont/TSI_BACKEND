@@ -8,6 +8,10 @@ import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaTextoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -42,9 +46,20 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
     @Override
     public HistoriaVidaAudio delete(int id){
         HistoriaVidaAudio historiaVidaAudio=historiaVidaAudioRepository.findById(id);
+
+        String auxiliar = historiaVidaAudio.getArchivo_mp3();
+        File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
+
         if (historiaVidaAudio!=null){
             historiaVidaAudioRepository.delete(historiaVidaAudio);
         }
+
+
+        System.out.println("this is the name"+fileToDelete.getName());
+        fileToDelete.delete();
+        //boolean success = fileToDelete.delete();
+       // System.out.println("this is the delete = "+success);
+
         return historiaVidaAudio;
     }
 
