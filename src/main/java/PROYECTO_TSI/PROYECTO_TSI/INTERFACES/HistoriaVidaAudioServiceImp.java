@@ -55,8 +55,6 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
         }
         System.out.println("this is the name"+fileToDelete.getName());
         fileToDelete.delete();
-        //boolean success = fileToDelete.delete();
-       // System.out.println("this is the delete = "+success);
 
         return historiaVidaAudio;
     }

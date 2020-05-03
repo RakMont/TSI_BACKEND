@@ -8,6 +8,7 @@ import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -38,9 +39,14 @@ public class ConvenioServiceImp implements ConvenioService {
     @Override
     public Convenio delete(int id){
         Convenio convenio=convenioRepository.findById(id);
+
+        String auxiliar = convenio.getImagen();
+        File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
         if (convenio!=null){
             convenioRepository.delete(convenio);
         }
+        System.out.println("this is the name"+fileToDelete.getName());
+        fileToDelete.delete();
         return convenio;
     }
 }
