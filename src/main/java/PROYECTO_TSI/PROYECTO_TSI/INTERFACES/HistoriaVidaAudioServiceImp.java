@@ -22,9 +22,9 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
     @Override
     public List<HistoriaVidaAudio> listar(){
         List<HistoriaVidaAudio>list=historiaVidaAudioRepository.findAll();
-        for( HistoriaVidaAudio o:list){
+        /*for( HistoriaVidaAudio o:list){
             System.out.println("date : "+o.getFecha());
-        }
+        }*/
         return historiaVidaAudioRepository.findAll();
     }
 
@@ -51,11 +51,12 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
         File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
 
         if (historiaVidaAudio!=null){
-            historiaVidaAudioRepository.delete(historiaVidaAudio);
-        }
-        System.out.println("this is the name"+fileToDelete.getName());
-        fileToDelete.delete();
+            if (fileToDelete.delete()){
+                historiaVidaAudioRepository.delete(historiaVidaAudio);
+                System.out.println("Se logro borrar la historia  ");
 
+            }
+        }
         return historiaVidaAudio;
     }
 

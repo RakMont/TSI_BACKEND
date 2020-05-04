@@ -148,26 +148,52 @@ public class HistoriaVidaAudioController {
     public ResponseEntity<List<String>> getHVAAudios() {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/historiaHVA");
+
+        /////////////////////////////////////////////////////
+        List<HistoriaVidaAudio>list=historiaVidaAudioService.listar();
+        List<HistoriaVidaAudio> lista = new ArrayList<HistoriaVidaAudio>();
+        int aux=1;
+        int lenght=list.size();
+        System.out.println("the size is"+lenght);
+        for( HistoriaVidaAudio o:list){
+            lista.add(list.get(lenght-aux));
+            aux++;
+        }
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
         File filefolder =new File(filesPath);
+
+        for (final File file  :folder.listFiles()){
+            System.out.println("esto es la lista"+ file.getName());
+
+        }
+
         if (filefolder!=null){
-            for (final File file:filefolder.listFiles()){
-                if(!file.isDirectory()){
-                    String encodeBase64=null;
-                    try{
-                        String extension=FilenameUtils.getExtension(file.getName());
-                        FileInputStream fileInputStream=new FileInputStream(file);
-                        byte[]bytes=new byte[(int)file.length()];
-                        fileInputStream.read(bytes);
-                        encodeBase64= Base64.getEncoder().encodeToString(bytes);
-                        historiaHVA.add("data:audio/"+extension+";base64,"+encodeBase64);
-                        fileInputStream.close();;
+            for (HistoriaVidaAudio o:lista){
+                for (final File file:filefolder.listFiles()){
 
-                    }catch(Exception e){
+                    if (o.getArchivo_mp3().equals(file.getName())){
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension=FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:audio/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
 
 
+                            }
+                        }
                     }
+
                 }
             }
+
         }
 
         return new ResponseEntity<List<String>>(historiaHVA,HttpStatus.OK);
@@ -181,12 +207,9 @@ public class HistoriaVidaAudioController {
         int lenght=list.size();
         System.out.println("the size is"+lenght);
         for( HistoriaVidaAudio o:list){
-
             lista.add(list.get(lenght-aux));
-
             aux++;
         }
-        //return historiaVidaAudioService.listar();
         return lista;
     }
 
