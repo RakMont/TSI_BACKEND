@@ -38,10 +38,12 @@ public class ConvenioServiceImp implements ConvenioService {
 
     @Override
     public Convenio delete(int id){
+        System.out.println("this llega aqui");
         Convenio convenio=convenioRepository.findById(id);
+        System.out.println("this is the name"+convenio.getImagen());
 
         String auxiliar = convenio.getImagen();
-        File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
+        File fileToDelete = new File("src/main/webApp/convenios/"+auxiliar);
         if (convenio!=null){
             convenioRepository.delete(convenio);
         }

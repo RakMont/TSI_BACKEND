@@ -41,7 +41,7 @@ public class ConvenioController {
     @GetMapping(value = "/getConvenios")
     @CrossOrigin
     public ResponseEntity<List<String>> getConvenios() {
-        List<String> convenios=new ArrayList<String>();
+        List<String> photos=new ArrayList<String>();
         String filesPath =context.getRealPath("/convenios");
         File filefolder =new File(filesPath);
         if (filefolder!=null){
@@ -54,7 +54,7 @@ public class ConvenioController {
                         byte[]bytes=new byte[(int)file.length()];
                         fileInputStream.read(bytes);
                         encodeBase64= Base64.getEncoder().encodeToString(bytes);
-                        convenios.add("data:audio/"+extension+";base64,"+encodeBase64);
+                        photos.add("data:image/"+extension+";base64,"+encodeBase64);
                         fileInputStream.close();;
 
                     }catch(Exception e){
@@ -65,7 +65,7 @@ public class ConvenioController {
             }
         }
 
-        return new ResponseEntity<List<String>>(convenios,HttpStatus.OK);
+        return new ResponseEntity<List<String>>(photos,HttpStatus.OK);
     }
     @GetMapping
     public List<Convenio> listar() {
