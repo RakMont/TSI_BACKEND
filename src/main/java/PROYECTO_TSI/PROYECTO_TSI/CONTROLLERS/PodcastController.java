@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
@@ -40,6 +41,74 @@ public class PodcastController {
     ServletContext context;
 
 
+    @PostMapping(value = "UpdatePodcastFile")
+    public ResponseEntity<Response> UpdatePodcastFile(@RequestParam("file") Optional<MultipartFile> file2, @RequestParam("podcast") String podcast) throws JsonParseException, JsonMappingException, IOException {
+        System.out.println("llega a la funcion");
+
+        Podcast podcast1 = new ObjectMapper().readValue(podcast, Podcast.class);
+            System.out.println("llega a not null");
+            if (file2.isPresent()) {
+                MultipartFile file = file2.get();
+                if (podcast1.getArchivoMP3().equals(file.getOriginalFilename())) {
+                    System.out.println("entra a imprimir el mismo");
+                    podcastService.edit(podcast1);
+                    return new ResponseEntity<Response>(new Response("historia saved succesfull"), HttpStatus.OK);
+                } else {
+                    if (podcast1.getArchivoMP3().equals(file.getOriginalFilename())) {
+                        System.out.println("entra a imprimir el mismo");
+                        podcastService.edit(podcast1);
+                        return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
+                    } else {
+                        System.out.println("entra a eliminar");
+
+                        String auxiliar = podcast1.getArchivoMP3();
+                        File fileToDelete = new File("src/main/webApp/podcasts/" + auxiliar);
+                        System.out.println("this is the name" + fileToDelete.getName());
+                        fileToDelete.delete();
+
+                        podcast1.setArchivoMP3(file.getOriginalFilename());
+
+                        boolean isExist = new java.io.File(context.getRealPath("/podcasts/")).exists();
+                        if (!isExist) {
+                            System.out.println("creating directory");
+                            new java.io.File(context.getRealPath("/podcasts/")).mkdir();
+                        }
+                        String filename = file.getOriginalFilename();
+                        String modifiedFilename = FilenameUtils.getBaseName(filename) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(filename);
+                        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
+
+                        File serverfile = new java.io.File(context.getRealPath("/podcasts/" + java.io.File.separator + modifiedFilename));
+
+                        try {
+                            FileUtils.writeByteArrayToFile(serverfile, file.getBytes());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        podcast1.setArchivoMP3(modifiedFilename);
+
+                        Date date = Date.valueOf(LocalDate.now());
+                        podcast1.setFecha(date);
+                        // HistoriaVidaAudio historiaVidaAudio1=historiaVidaAudioService.agregar(historiaVidaAudio);
+                        Podcast podcast2 = podcastService.edit(podcast1);
+
+                    }
+                }
+            } else {
+                System.out.println("no cambiaron nada");
+                podcastService.edit(podcast1);
+                return new ResponseEntity<Response>(new Response("Convenio saved succesfull"), HttpStatus.OK);
+            }
+            if (podcast1 != null) {
+                return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
+
+            } else {
+                return new ResponseEntity<Response>(new Response("Audio not saved"), HttpStatus.BAD_REQUEST);
+
+            }
+
+
+
+    }
 
 
 
@@ -220,35 +289,42 @@ public class PodcastController {
     public ResponseEntity<Response> saveAudioFile(@RequestParam("file") MultipartFile file, @RequestParam("podcast")String podcast)throws JsonParseException, JsonMappingException, IOException
     {
         Podcast podcast1=new ObjectMapper().readValue(podcast,Podcast.class);
-        podcast1.setArchivoMP3(file.getOriginalFilename());
-        boolean isExist = new java.io.File(context.getRealPath("/podcasts/")).exists();
-        if(!isExist){
-            System.out.println("creating directory");
-            new java.io.File(context.getRealPath("/podcasts/")).mkdir();
+        if (podcastService.agregar(podcast1)!=null){
+            System.out.println("el tema no es null");
+            podcast1.setArchivoMP3(file.getOriginalFilename());
+            boolean isExist = new java.io.File(context.getRealPath("/podcasts/")).exists();
+            if(!isExist){
+                System.out.println("creating directory");
+                new java.io.File(context.getRealPath("/podcasts/")).mkdir();
+            }
+            String filename = file.getOriginalFilename();
+            String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
+            //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
+
+            File serverfile=new java.io.File(context.getRealPath("/podcasts/"+ java.io.File.separator+modifiedFilename));
+
+            try{
+                FileUtils.writeByteArrayToFile(serverfile,file.getBytes());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            podcast1.setArchivoMP3(modifiedFilename);
+
+            Date date = Date.valueOf(LocalDate.now());
+            podcast1.setFecha(date);
+            Podcast podcast2=podcastService.agregar(podcast1);
+            if(podcast2!=null){
+                return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
+
+            }else{
+                return new ResponseEntity<Response>(new Response("Audio not saved"), HttpStatus.BAD_REQUEST);
+
+            }
         }
-        String filename = file.getOriginalFilename();
-        String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
-
-        File serverfile=new java.io.File(context.getRealPath("/podcasts/"+ java.io.File.separator+modifiedFilename));
-
-        try{
-            FileUtils.writeByteArrayToFile(serverfile,file.getBytes());
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        podcast1.setArchivoMP3(modifiedFilename);
-
-        Date date = Date.valueOf(LocalDate.now());
-        podcast1.setFecha(date);
-        Podcast podcast2=podcastService.agregar(podcast1);
-        if(podcast2!=null){
-            return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
-
-        }else{
+        else{
             return new ResponseEntity<Response>(new Response("Audio not saved"), HttpStatus.BAD_REQUEST);
-
         }
+
     }
 
 }
