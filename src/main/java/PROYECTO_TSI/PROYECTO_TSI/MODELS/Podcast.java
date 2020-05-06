@@ -12,6 +12,9 @@ public class Podcast {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id_podcast;
 
+    @ManyToOne
+    @JoinColumn(name = "id_tema")
+    private Tema tema;
     @Column
     private Date fecha;
 
@@ -31,6 +34,14 @@ public class Podcast {
         this.titulo = titulo;
         this.descripcion = descripcion;
         this.archivoMP3 = archivoMP3;
+    }
+
+    public Tema getTema() {
+        return tema;
+    }
+
+    public void setTema(Tema tema) {
+        this.tema = tema;
     }
 
     public int getId_podcast() {

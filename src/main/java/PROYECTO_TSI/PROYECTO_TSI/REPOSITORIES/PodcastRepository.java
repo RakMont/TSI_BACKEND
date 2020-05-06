@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES;
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Podcast;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.Tema;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import org.springframework.data.repository.CrudRepository;
 
@@ -11,4 +12,5 @@ public interface PodcastRepository extends CrudRepository<Podcast,Integer> {
     Podcast findById(int id);
     Podcast save(Podcast podcast);
     void delete(Podcast p);
+    List<Podcast> findByTema(Tema tema);
 }

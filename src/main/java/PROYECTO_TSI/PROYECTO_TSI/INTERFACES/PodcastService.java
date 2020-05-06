@@ -11,4 +11,5 @@ public interface PodcastService {
     Podcast agregar(Podcast p);
     Podcast edit(Podcast p);
     Podcast delete(int id);
+    public List<Podcast> listarPorTema(Tema tema);
 }

@@ -1,13 +1,16 @@
 package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Podcast;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.Tema;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.PodcastRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.VisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -18,6 +21,11 @@ public class PodcastServiceImp implements PodcastService {
     @Override
     public List<Podcast> listar(){
         return podcastRepository.findAll();
+    }
+
+    @Override
+    public List<Podcast> listarPorTema(Tema tema){
+        return podcastRepository.findByTema(tema);
     }
 
     @Override
@@ -38,10 +46,18 @@ public class PodcastServiceImp implements PodcastService {
 
     @Override
     public Podcast delete(int id){
-        Podcast p = podcastRepository.findById(id);
-        if(p!=null){
-            podcastRepository.delete(p);
+        Podcast podcast=podcastRepository.findById(id);
+
+        String auxiliar = podcast.getArchivoMP3();
+        File fileToDelete = new File("src/main/webApp/podcasts/"+auxiliar);
+
+        if (podcast!=null){
+            if (fileToDelete.delete()){
+                podcastRepository.delete(podcast);
+                System.out.println("Se logro borrar la historia  ");
+
+            }
         }
-        return p;
+        return podcast;
     }
 }
