@@ -2,6 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.MisionService;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Mision;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,10 @@ public class MisionController {
 
     @GetMapping
     public List<Mision> listar() {
+        List<Mision>list=misionService.listar();
+        for (Mision c:list){
+            System.out.println("size is "+ c.getContenido().length());
+        }
         return misionService.listar();
     }
 

@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.VisionService;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.Comentario;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Mision;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ public class VisionController {
 
     @GetMapping
     public List<Vision> listar() {
+        List<Vision>list=visionService.listar();
+        for (Vision c:list){
+            System.out.println("size is "+ c.getContenido().length());
+        }
         return visionService.listar();
     }
 
