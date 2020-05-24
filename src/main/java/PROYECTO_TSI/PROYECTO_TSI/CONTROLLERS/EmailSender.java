@@ -47,7 +47,8 @@ public class EmailSender {
         System.out.println("llega aqui y pasa 2");
 
         try {
-            helper.setTo(details.getEmail());
+            // helper.setTo(details.getEmail());
+            helper.setTo("monteroraquel658@gmail.com");
             helper.setText(html,true);
             helper.setSubject("Test Mail");
         } catch (javax.mail.MessagingException e) {

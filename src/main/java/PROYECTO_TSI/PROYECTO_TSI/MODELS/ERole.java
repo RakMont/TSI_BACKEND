@@ -1,0 +1,7 @@
+package PROYECTO_TSI.PROYECTO_TSI.MODELS;
+
+public enum ERole {
+    ROLE_USER,
+    ROLE_MODERATOR,
+    ROLE_ADMIN
+}
