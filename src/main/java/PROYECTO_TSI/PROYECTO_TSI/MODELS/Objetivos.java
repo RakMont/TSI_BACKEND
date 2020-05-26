@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Objects;
 
 @Entity
@@ -12,6 +13,7 @@ public class Objetivos {
     private int id_objetivos;
 
     @Column
+    @Size(max = 2000)
     private String contenido;
 
     public Objetivos(int id_objetivos, String contenido) {

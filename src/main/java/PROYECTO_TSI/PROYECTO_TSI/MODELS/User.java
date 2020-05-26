@@ -1,4 +1,5 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +31,21 @@ public class User {
     @Size(max = 120)
     private String password;
 
+    @NotBlank
+    @Size(max = 220)
+    private String nombre;
+
+    @NotBlank
+    @Size(max = 220)
+    private String apellido;
+
+    @Column
+    private Date fecha_nacimiento;
+
+    @NotBlank
+    @Size(max = 220)
+    private String lugar_acogida;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(	name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -43,6 +59,8 @@ public class User {
         this.email = email;
         this.password = password;
     }
+
+
 
     public Long getId() {
         return id;
@@ -81,6 +99,38 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public String getLugar_acogida() {
+        return lugar_acogida;
+    }
+
+    public void setLugar_acogida(String lugar_acogida) {
+        this.lugar_acogida = lugar_acogida;
     }
 }
 

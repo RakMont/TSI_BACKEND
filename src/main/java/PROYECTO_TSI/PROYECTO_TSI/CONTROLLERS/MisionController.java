@@ -4,6 +4,7 @@ import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.MisionService;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Mision;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class MisionController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public Mision agregar(@RequestBody Mision p) {
         return misionService.agregar(p);
     }
@@ -37,6 +39,7 @@ public class MisionController {
     }
 
     @PutMapping(path = {"/{id}"})
+    @PreAuthorize("hasRole('ADMIN')")
     public Mision editar(@RequestBody Mision p, @PathVariable("id") int id) {
         p.setId_mision(id);
         return misionService.edit(p);

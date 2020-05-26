@@ -5,6 +5,7 @@ import PROYECTO_TSI.PROYECTO_TSI.MODELS.Comentario;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Mision;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,6 +39,7 @@ public class VisionController {
     }
 
     @PutMapping(path = {"/{id}"})
+    @PreAuthorize("hasRole('ADMIN') or ('MODERATOR')")
     public Vision editar(@RequestBody Vision p, @PathVariable("id") int id) {
         p.setId_vision(id);
         return visionService.edit(p);

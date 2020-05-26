@@ -78,7 +78,6 @@ public class AuthController {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
-
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
@@ -113,7 +112,16 @@ public class AuthController {
                 }
             });
         }
+        System.out.println("llega aqui en el registrar");
+        System.out.println(signUpRequest.getNombre());
+        System.out.println(signUpRequest.getApellido());
+        System.out.println(signUpRequest.getLugar_acogida());
+        System.out.println(signUpRequest.getFecha());
 
+        user.setNombre(signUpRequest.getNombre());
+        user.setApellido(signUpRequest.getApellido());
+        user.setLugar_acogida(signUpRequest.getLugar_acogida());
+        user.setFecha_nacimiento(signUpRequest.getFecha());
         user.setRoles(roles);
         userRepository.save(user);
 
