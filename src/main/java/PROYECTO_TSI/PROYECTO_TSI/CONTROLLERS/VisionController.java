@@ -39,7 +39,6 @@ public class VisionController {
     }
 
     @PutMapping(path = {"/{id}"})
-    @PreAuthorize("hasRole('ADMIN') or ('MODERATOR')")
     public Vision editar(@RequestBody Vision p, @PathVariable("id") int id) {
         p.setId_vision(id);
         return visionService.edit(p);

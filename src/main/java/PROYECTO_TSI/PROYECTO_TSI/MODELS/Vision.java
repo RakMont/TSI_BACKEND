@@ -13,7 +13,7 @@ public class Vision {
     private int id_vision;
 
     @Column
-    @Size(max = 2000)
+    @Size(max = 10000)
     private String contenido;
 
 

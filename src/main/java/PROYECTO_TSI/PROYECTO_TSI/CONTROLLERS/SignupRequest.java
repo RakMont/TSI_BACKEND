@@ -22,7 +22,7 @@ public class SignupRequest {
     private String apellido;
 
 
-    private Date fecha;
+    private String fecha_nacimiento;
 
 
     @Size(max = 220)
@@ -82,12 +82,12 @@ public class SignupRequest {
         this.apellido = apellido;
     }
 
-    public Date getFecha() {
-        return fecha;
+    public String getFecha_nacimiento() {
+        return fecha_nacimiento;
     }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
+    public void setFecha_nacimiento(String fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
     }
 
     public String getLugar_acogida() {

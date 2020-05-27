@@ -19,6 +19,8 @@ public class UserDetailsImp implements UserDetails{
 
     private String email;
 
+
+
     @JsonIgnore
     private String password;
 
@@ -96,4 +98,7 @@ public class UserDetailsImp implements UserDetails{
         UserDetailsImp user = (UserDetailsImp) o;
         return Objects.equals(id, user.id);
     }
+
+
+
 }

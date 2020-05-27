@@ -39,7 +39,6 @@ public class MisionController {
     }
 
     @PutMapping(path = {"/{id}"})
-    @PreAuthorize("hasRole('ADMIN')")
     public Mision editar(@RequestBody Mision p, @PathVariable("id") int id) {
         p.setId_mision(id);
         return misionService.edit(p);

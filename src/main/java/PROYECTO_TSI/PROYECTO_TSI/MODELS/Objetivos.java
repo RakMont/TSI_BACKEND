@@ -13,7 +13,7 @@ public class Objetivos {
     private int id_objetivos;
 
     @Column
-    @Size(max = 2000)
+    @Size(max = 10000)
     private String contenido;
 
     public Objetivos(int id_objetivos, String contenido) {

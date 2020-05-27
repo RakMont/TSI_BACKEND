@@ -1,6 +1,8 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -20,11 +22,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -36,6 +34,8 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
+
+
     @Autowired
     RoleRepository roleRepository;
 
@@ -44,6 +44,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -67,6 +70,7 @@ public class AuthController {
     }
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+        System.out.println("fecha es "+signUpRequest.getFecha_nacimiento());
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -112,20 +116,19 @@ public class AuthController {
                 }
             });
         }
-        System.out.println("llega aqui en el registrar");
-        System.out.println(signUpRequest.getNombre());
-        System.out.println(signUpRequest.getApellido());
-        System.out.println(signUpRequest.getLugar_acogida());
-        System.out.println(signUpRequest.getFecha());
+
 
         user.setNombre(signUpRequest.getNombre());
         user.setApellido(signUpRequest.getApellido());
         user.setLugar_acogida(signUpRequest.getLugar_acogida());
-        user.setFecha_nacimiento(signUpRequest.getFecha());
+        String prueba=signUpRequest.getFecha_nacimiento();
+        prueba=prueba.substring(0,10);
+        Date fechaprueba=Date.valueOf(prueba);
+        user.setFecha_nacimiento(fechaprueba);
         user.setRoles(roles);
         userRepository.save(user);
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));
     }
 }
 
