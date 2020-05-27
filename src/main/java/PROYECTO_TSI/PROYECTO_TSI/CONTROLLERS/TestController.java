@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.sql.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -35,7 +36,11 @@ public class TestController {
     public String allAccess() {
         return "Public Content.";
     }
-
+    @GetMapping("/getallusers")
+    public List<User> listarAllUsers() {
+        //User user=
+        return userRepository.findAll();
+    }
 
     @GetMapping(path = {"/getprofile/{username}"})
     public Optional<User> listarId(@PathVariable("username") String username) {
