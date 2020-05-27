@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="Referente")
@@ -13,6 +14,7 @@ public class Referente {
     @Column
     private String video_referente;
     @Column
+    @Size(max = 10000)
     private String descripcion;
     @Column
     private String titulo;
