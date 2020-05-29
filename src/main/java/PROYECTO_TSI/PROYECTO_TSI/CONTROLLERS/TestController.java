@@ -1,9 +1,6 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.ERole;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Referente;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Role;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.User;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.*;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.RoleRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,17 +44,27 @@ public class TestController {
         //User user=
         return userRepository.findByUsername(username);
     }
+    @DeleteMapping(path = {"/deleteuser/{username}"})
+    public User deleteuser(@PathVariable("username") String username) {
+        Optional<User> user= userRepository.findByUsername(username);
+        User user2=user.get();
+        if (user2!=null){
+            userRepository.delete(user2);
+        }
+        System.out.println("id es"+user2.getId());
+        return user2;
+    }
 
     @PutMapping ("/updateprofile")
     public ResponseEntity<?> editprofile(@Valid @RequestBody UpdateRequest signUpRequest) {
         //User user=
-        System.out.println("this is the id"+signUpRequest.getId());
+        /*System.out.println("this is the id"+signUpRequest.getId());
         System.out.println("this is the id"+signUpRequest.getEmail());
         System.out.println("this is the id"+signUpRequest.getUsername());
         System.out.println("this is the id"+signUpRequest.getNombre());
         System.out.println("this is the id"+signUpRequest.getApellido());
         System.out.println("this is the id"+signUpRequest.getPassword());
-
+*/
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
 
         if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
