@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.sql.Date;
 
 @Entity
@@ -16,6 +17,7 @@ public class HistoriaVidaTexto {
     @Column
     private Date fecha;
     @Column
+    @Size(max = 2000)
     private String contenido;
 
     public HistoriaVidaTexto() {

@@ -42,7 +42,16 @@ public class User {
     @Column
     private Date fecha_nacimiento;
 
-    @NotBlank
+    @Column
+    private String telefono;
+
+    @Column
+    private String perfil;
+
+    @Column
+    @Size(max = 20)
+    private String genero;
+
     @Size(max = 220)
     private String lugar_acogida;
 
@@ -131,6 +140,30 @@ public class User {
 
     public void setLugar_acogida(String lugar_acogida) {
         this.lugar_acogida = lugar_acogida;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
     }
 }
 

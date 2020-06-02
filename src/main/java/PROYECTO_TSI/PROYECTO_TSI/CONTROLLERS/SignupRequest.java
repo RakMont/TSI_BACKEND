@@ -2,6 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 import java.sql.Date;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 public class SignupRequest {
     @NotBlank
@@ -18,6 +19,13 @@ public class SignupRequest {
     private String nombre;
 
 
+    private String telefono;
+
+    private String perfil;
+
+    @Size(max = 20)
+    private String genero;
+
     @Size(max = 220)
     private String apellido;
 
@@ -33,6 +41,30 @@ public class SignupRequest {
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
 
     public String getUsername() {
         return username;

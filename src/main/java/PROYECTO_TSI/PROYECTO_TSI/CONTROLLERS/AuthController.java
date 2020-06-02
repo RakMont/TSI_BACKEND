@@ -1,4 +1,5 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
+import java.io.IOException;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +16,9 @@ import PROYECTO_TSI.PROYECTO_TSI.MODELS.User;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.RoleRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
 import PROYECTO_TSI.PROYECTO_TSI.Security.JwtUtils;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -69,7 +72,7 @@ public class AuthController {
                 roles));
     }
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws JsonParseException, JsonMappingException, IOException {
         System.out.println("fecha es "+signUpRequest.getFecha_nacimiento());
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -122,10 +125,21 @@ public class AuthController {
         user.setApellido(signUpRequest.getApellido());
         user.setLugar_acogida(signUpRequest.getLugar_acogida());
         String prueba=signUpRequest.getFecha_nacimiento();
-        prueba=prueba.substring(0,10);
-        Date fechaprueba=Date.valueOf(prueba);
-        user.setFecha_nacimiento(fechaprueba);
+        if (signUpRequest.getFecha_nacimiento().equals(null)){
+            user.setFecha_nacimiento(null);
+
+        }
+        else{
+            prueba=prueba.substring(0,10);
+            Date fechaprueba=Date.valueOf(prueba);
+            user.setFecha_nacimiento(fechaprueba);
+        }
+
         user.setRoles(roles);
+        user.setGenero(signUpRequest.getGenero());
+        user.setTelefono(signUpRequest.getTelefono());
+        user.setPerfil(signUpRequest.getPerfil());
+
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));

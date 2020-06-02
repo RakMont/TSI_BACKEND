@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -35,8 +32,34 @@ public class TestController {
     }
     @GetMapping("/getallusers")
     public List<User> listarAllUsers() {
-        //User user=
-        return userRepository.findAll();
+        List<User> lista=userRepository.findAll();
+        List<User>returnlist=new ArrayList<>();
+        Optional<Role> s;
+        Set<Role> brands;
+        for (User u:lista){
+            brands=u.getRoles();
+            s=brands.stream().findFirst();
+            if (s.get().getName().equals(ERole.ROLE_USER)){
+                returnlist.add(u);
+            }
+        }
+        return returnlist;
+    }
+
+    @GetMapping("/getallmoderator")
+    public List<User> getallmoderator() {
+        List<User> lista=userRepository.findAll();
+        List<User>returnlist=new ArrayList<>();
+        Optional<Role> s;
+        Set<Role> brands;
+        for (User u:lista){
+            brands=u.getRoles();
+            s=brands.stream().findFirst();
+            if (s.get().getName().equals(ERole.ROLE_MODERATOR)){
+                returnlist.add(u);
+            }
+        }
+        return returnlist;
     }
 
     @GetMapping(path = {"/getprofile/{username}"})
