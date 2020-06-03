@@ -1,5 +1,5 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
-import java.io.IOException;
+import java.io.*;
 import java.sql.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.UserDetailsImp;
@@ -17,6 +18,9 @@ import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.RoleRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
 import PROYECTO_TSI.PROYECTO_TSI.Security.JwtUtils;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import org.apache.commons.io.FileUtils;
+
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JsonParseException;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +30,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import org.apache.commons.io.FileUtils;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -37,7 +44,8 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
-
+    @Autowired
+    ServletContext context;
 
     @Autowired
     RoleRepository roleRepository;
@@ -49,8 +57,54 @@ public class AuthController {
     JwtUtils jwtUtils;
 
 
+    public String createdefaultprofile(String genero)throws IOException{
+        String nameofprofileimage;
+        File file;
+        if (genero.equals("Masculino")){
+            file = new File("src/main/webApp/statics/Masculino.jpg");
 
+        }
+        else{
+            if (genero.equals("Femenino")){
+                file = new File("src/main/webApp/statics/Femenino.jpg");
 
+            }
+            else{
+                file = new File("src/main/webApp/statics/otro.jpg");
+            }
+        }
+
+        nameofprofileimage=file.getName();
+
+        String modifiedFilename= FilenameUtils.getBaseName(nameofprofileimage)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(nameofprofileimage);
+
+        File serverfile=new java.io.File(context.getRealPath("/profiles/"+ java.io.File.separator+modifiedFilename));
+        try{
+            copyFileUsingStream(file,new File("src/main/webApp/profiles/"+modifiedFilename));
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        nameofprofileimage=modifiedFilename;
+
+        return nameofprofileimage;
+
+    }
+    private static void copyFileUsingStream(File source, File dest) throws IOException {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            is.close();
+            os.close();
+        }
+    }
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -139,7 +193,9 @@ public class AuthController {
         user.setGenero(signUpRequest.getGenero());
         user.setTelefono(signUpRequest.getTelefono());
         user.setPerfil(signUpRequest.getPerfil());
-
+        String var=user.getGenero();
+        var=createdefaultprofile(var);
+        user.setPerfil(var);
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));

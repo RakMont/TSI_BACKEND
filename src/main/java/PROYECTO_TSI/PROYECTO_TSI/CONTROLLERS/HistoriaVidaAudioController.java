@@ -85,12 +85,8 @@ public class HistoriaVidaAudioController {
     @PostMapping(value = "UpdateAudioFile")
     public ResponseEntity<Response> UpdateAudioFile(@RequestParam("file") Optional<MultipartFile> file2, @RequestParam("audio")String audio)throws JsonParseException, JsonMappingException, IOException
     {
-        System.out.println("llega a la funcion");
 
         HistoriaVidaAudio historiaVidaAudio=new ObjectMapper().readValue(audio,HistoriaVidaAudio.class);
-        //System.out.println("llega a recibir los datos");
-        //System.out.println("nombre anteior"+historiaVidaAudio.getArchivo_mp3());
-       // System.out.println("nombre nuevo"+file.getOriginalFilename());
         if (file2.isPresent()) {
             MultipartFile file = file2.get();
             if (historiaVidaAudio.getArchivo_mp3().equals(file.getOriginalFilename())) {
