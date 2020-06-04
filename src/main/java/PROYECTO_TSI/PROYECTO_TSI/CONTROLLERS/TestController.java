@@ -52,6 +52,124 @@ public class TestController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @GetMapping(value = "/getModersPhotos")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getModersPhotos() {
+        List<User> lista=userRepository.findAll();
+        List<User>returnlist=new ArrayList<>();
+        Optional<Role> s;
+        Set<Role> brands;
+        for (User u:lista){
+            brands=u.getRoles();
+            s=brands.stream().findFirst();
+            if (s.get().getName().equals(ERole.ROLE_MODERATOR)){
+                returnlist.add(u);
+            }
+        }
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (final File file  :folder.listFiles()){
+            System.out.println("esto es la lista"+ file.getName());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension=FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/getUsersPhotos")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getUsersPhotos() {
+        List<User> lista=userRepository.findAll();
+        List<User>returnlist=new ArrayList<>();
+        Optional<Role> s;
+        Set<Role> brands;
+        for (User u:lista){
+            brands=u.getRoles();
+            s=brands.stream().findFirst();
+            if (s.get().getName().equals(ERole.ROLE_USER)){
+                returnlist.add(u);
+            }
+        }
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (final File file  :folder.listFiles()){
+            System.out.println("esto es la lista"+ file.getName());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension=FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA,HttpStatus.OK);
+    }
+
     @GetMapping(path = {"/getprofilephoto/{username}"})
     @CrossOrigin
     public ResponseEntity<List<String>>getprofile(@PathVariable("username") String username) {
