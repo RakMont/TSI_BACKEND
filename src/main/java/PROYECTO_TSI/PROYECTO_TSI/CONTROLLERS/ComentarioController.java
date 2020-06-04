@@ -28,7 +28,7 @@ public List<Comentario> listComentariosRawTrabajo(){
     List<Comentario>returnList= new ArrayList<Comentario>();
 
     for (Comentario c:list){
-        //System.out.println("size is "+ c.getComentario().length());
+        System.out.println("size is "+c.toString());
         if (c.getId_comentario_ref()==0 && c.getReferente()==1){
             returnList.add(c);
         }
@@ -163,8 +163,9 @@ public List<Comentario> listComentariosRawEducacion(){
     }
     @PostMapping(path = {"/agregarComentarioTrabajo"})
     public Comentario agregarComentarioTrabajo(@RequestBody Comentario p) {
-        System.out.println("refsalud");
+        System.out.println("refTrabajo");
 
+        System.out.println(p.getUser());
         p.setReferente(1);
         return comentarioService.agregar(p);
     }
