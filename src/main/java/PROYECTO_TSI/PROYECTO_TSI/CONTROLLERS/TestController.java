@@ -1,8 +1,10 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
+import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.UserDetailsImp;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.*;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.RoleRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
+import PROYECTO_TSI.PROYECTO_TSI.Security.JwtUtils;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +30,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -39,7 +46,11 @@ public class TestController {
     @Autowired
     PasswordEncoder encoder;
 
+    @Autowired
+    AuthenticationManager authenticationManager;
 
+    @Autowired
+    JwtUtils jwtUtils;
 
     @GetMapping(path = {"/getprofilephoto/{username}"})
     @CrossOrigin
@@ -335,7 +346,7 @@ public class TestController {
         return user2;
     }
 
-    @PutMapping ("/updateprofile")
+    @PostMapping("/updateprofile")
     public ResponseEntity<?> editprofile(@Valid @RequestBody UpdateRequest signUpRequest) {
 
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
@@ -346,6 +357,68 @@ public class TestController {
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
+            }
+            else{
+                System.out.println("entra a no hay otros usernames iguales diferente");
+                LoginRequest loginRequest=new LoginRequest();
+                loginRequest.setPassword(signUpRequest.getPassword());
+                loginRequest.setPassword(signUpRequest.getUsername());
+
+            ///////////////////////////////////////////////////////////////////////
+                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                System.out.println("muere 1");
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jwt = jwtUtils.generateJwtToken(authentication);
+                System.out.println("muere 2");
+
+                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+                List<String> roles = userDetails.getAuthorities().stream()
+                        .map(item -> item.getAuthority())
+                        .collect(Collectors.toList());
+                System.out.println("muere 3");
+
+                if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
+                    System.out.println("entra a email diferente");
+
+                    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Email is already in use!"));
+                    }
+                }
+                User user = new User(signUpRequest.getUsername(),
+                        signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()));
+
+                Set<String> strRoles = signUpRequest.getRole();
+                Set<Role> roles2 = new HashSet<>();
+
+                Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles2.add(userRole);
+                user.setPerfil(signUpRequest.getPerfil());
+                user.setGenero(signUpRequest.getGenero());
+                user.setTelefono(signUpRequest.getTelefono());
+                user.setNombre(signUpRequest.getNombre());
+                user.setApellido(signUpRequest.getApellido());
+                user.setLugar_acogida(signUpRequest.getLugar_acogida());
+                String prueba=signUpRequest.getFecha_nacimiento();
+                prueba=prueba.substring(0,10);
+                Date fechaprueba=Date.valueOf(prueba);
+                user.setFecha_nacimiento(fechaprueba);
+                user.setRoles(roles2);
+                user.setId(signUpRequest.getId());
+                userRepository.save(user);
+                return ResponseEntity.ok(new JwtResponse(jwt,
+                        userDetails.getId(),
+                        userDetails.getUsername(),
+                        userDetails.getEmail(),
+                        roles));
+                //////////////////////////////////////////////////////////////////////
             }
         }
 
@@ -373,6 +446,9 @@ public class TestController {
                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
         roles.add(userRole);
 
+        user.setPerfil(signUpRequest.getPerfil());
+        user.setGenero(signUpRequest.getGenero());
+        user.setTelefono(signUpRequest.getTelefono());
         user.setNombre(signUpRequest.getNombre());
         user.setApellido(signUpRequest.getApellido());
         user.setLugar_acogida(signUpRequest.getLugar_acogida());

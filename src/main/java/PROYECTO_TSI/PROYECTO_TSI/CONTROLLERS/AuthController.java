@@ -107,6 +107,7 @@ public class AuthController {
     }
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+        System.out.println("user name"+loginRequest.getUsername()+"  password" + loginRequest.getPassword());
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -176,6 +177,7 @@ public class AuthController {
 
 
         user.setNombre(signUpRequest.getNombre());
+
         user.setApellido(signUpRequest.getApellido());
         user.setLugar_acogida(signUpRequest.getLugar_acogida());
         String prueba=signUpRequest.getFecha_nacimiento();

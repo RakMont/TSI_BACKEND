@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="TeOfrecemos")
@@ -14,8 +15,10 @@ public class TeOfrecemos {
     private String tema;
 
     @Column
+    @Size(max = 2000)
     private String contenido;
     @Column
+    @Size(max = 2000)
     private String contacto;
 
     @Override
