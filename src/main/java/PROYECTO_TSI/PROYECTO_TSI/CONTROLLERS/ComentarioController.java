@@ -3,15 +3,18 @@ package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.ComentarioService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaTextoService;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Comentario;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Referente;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.*;
+import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.servlet.ServletContext;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.*;
 
 @CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @RestController
@@ -20,7 +23,87 @@ public class ComentarioController {
 
     @Autowired
     ComentarioService comentarioService;
-///////////////////////////////////////////////////////////////////////////////////
+    @Autowired
+    ServletContext context;
+    @Autowired
+    UserRepository userRepository;
+
+    public List<User> listuserscomentRawTrabajo(){
+        List<Comentario>list=comentarioService.listar();
+        List<Comentario>returnList= new ArrayList<Comentario>();
+
+        for (Comentario c:list){
+            System.out.println("size is "+c.toString());
+            if (c.getId_comentario_ref()==0 && c.getReferente()==1){
+                returnList.add(c);
+            }
+        }
+        List<User> returnlist=new ArrayList<>();
+        List<User>list2=userRepository.findAll();
+
+        for (Comentario c:returnList){
+            for (User u:list2){
+                if (u.getId()==c.getUser().getId()){
+                    returnlist.add(u);
+                }
+            }
+
+        }
+
+        return returnlist;
+    }
+    @GetMapping(value = "/getPhotosofrawtrabajocoments")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getPhotosofrawtrabajocoments() {
+        List<User> returnlist=listuserscomentRawTrabajo();
+
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (User user  :returnlist){
+            System.out.println("esto es la lista"+ user.getNombre());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        System.out.println("image "+o.getPerfil());
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension= FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA, HttpStatus.OK);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////
     /*REFERENTE TRABAJO*/
 @GetMapping(path = {"/listComentariosRawTrabajo"})
 public List<Comentario> listComentariosRawTrabajo(){
