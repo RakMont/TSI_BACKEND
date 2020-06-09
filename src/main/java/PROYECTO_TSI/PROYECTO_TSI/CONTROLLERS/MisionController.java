@@ -28,7 +28,6 @@ public class MisionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public Mision agregar(@RequestBody Mision p) {
         return misionService.agregar(p);
     }

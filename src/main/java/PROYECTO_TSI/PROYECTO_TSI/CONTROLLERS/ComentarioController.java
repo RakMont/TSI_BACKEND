@@ -28,6 +28,318 @@ public class ComentarioController {
     @Autowired
     UserRepository userRepository;
 
+
+    public List<User> listuserscomentSalud(){
+        List<Comentario>list=comentarioService.listar();
+        List<Comentario>returnList= new ArrayList<Comentario>();
+
+        for (Comentario c:list){
+            System.out.println("size is "+c.toString());
+            if (c.getId_comentario_ref()!=0 && c.getReferente()==4){
+                returnList.add(c);
+            }
+        }
+        List<User> returnlist=new ArrayList<>();
+        List<User>list2=userRepository.findAll();
+
+        for (Comentario c:returnList){
+            for (User u:list2){
+                if (u.getId()==c.getUser().getId()){
+                    returnlist.add(u);
+                }
+            }
+
+        }
+
+        return returnlist;
+    }
+    @GetMapping(value = "/getPhotososaludcoments")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getPhotososaludcoments() {
+        List<User> returnlist=listuserscomentSalud();
+
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (User user  :returnlist){
+            System.out.println("esto es la lista"+ user.getNombre());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        System.out.println("image "+o.getPerfil());
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension= FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA, HttpStatus.OK);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////
+    /*list of users comentars on raw educacion*/
+
+    public List<User> listuserscomentEducacion(){
+        List<Comentario>list=comentarioService.listar();
+        List<Comentario>returnList= new ArrayList<Comentario>();
+
+        for (Comentario c:list){
+            System.out.println("size is "+c.toString());
+            if (c.getId_comentario_ref()!=0 && c.getReferente()==3){
+                returnList.add(c);
+            }
+        }
+        List<User> returnlist=new ArrayList<>();
+        List<User>list2=userRepository.findAll();
+
+        for (Comentario c:returnList){
+            for (User u:list2){
+                if (u.getId()==c.getUser().getId()){
+                    returnlist.add(u);
+                }
+            }
+
+        }
+
+        return returnlist;
+    }
+    @GetMapping(value = "/getPhotosofeducacioncoments")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getPhotosofeducacioncoments() {
+        List<User> returnlist=listuserscomentEducacion();
+
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (User user  :returnlist){
+            System.out.println("esto es la lista"+ user.getNombre());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        System.out.println("image "+o.getPerfil());
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension= FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA, HttpStatus.OK);
+    }
+
+
+    ////////////////////////////////////////////////////////////////////
+    /*list of users comentars on raw vivienda*/
+    public List<User> listuserscomentVivienda(){
+        List<Comentario>list=comentarioService.listar();
+        List<Comentario>returnList= new ArrayList<Comentario>();
+
+        for (Comentario c:list){
+            System.out.println("size is "+c.toString());
+            if (c.getId_comentario_ref()!=0 && c.getReferente()==2){
+                returnList.add(c);
+            }
+        }
+        List<User> returnlist=new ArrayList<>();
+        List<User>list2=userRepository.findAll();
+
+        for (Comentario c:returnList){
+            for (User u:list2){
+                if (u.getId()==c.getUser().getId()){
+                    returnlist.add(u);
+                }
+            }
+
+        }
+
+        return returnlist;
+    }
+    @GetMapping(value = "/getPhotosofviviendacoments")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getPhotosofviviendacoments() {
+        List<User> returnlist=listuserscomentVivienda();
+
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (User user  :returnlist){
+            System.out.println("esto es la lista"+ user.getNombre());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        System.out.println("image "+o.getPerfil());
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension= FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA, HttpStatus.OK);
+    }
+
+    ////////////////////////////////////////////////////////////////////
+    /*list of users comentars on raw trabajo*/
+    public List<User> listuserscomentTrabajo(){
+        List<Comentario>list=comentarioService.listar();
+        List<Comentario>returnList= new ArrayList<Comentario>();
+
+        for (Comentario c:list){
+            System.out.println("size is "+c.toString());
+            if (c.getId_comentario_ref()!=0 && c.getReferente()==1){
+                returnList.add(c);
+            }
+        }
+        List<User> returnlist=new ArrayList<>();
+        List<User>list2=userRepository.findAll();
+
+        for (Comentario c:returnList){
+            for (User u:list2){
+                if (u.getId()==c.getUser().getId()){
+                    returnlist.add(u);
+                }
+            }
+
+        }
+
+        return returnlist;
+    }
+    @GetMapping(value = "/getPhotosoftrabajocoments")
+    @CrossOrigin
+    public ResponseEntity<List<String>> getPhotosoftrabajocoments() {
+        List<User> returnlist=listuserscomentTrabajo();
+
+        List<String> historiaHVA=new ArrayList<String>();
+        String filesPath =context.getRealPath("/profiles");
+
+        /////////////////////////////////////////////////////
+
+        ///////////////////////////////////////////////////
+        File folder =new File(filesPath);
+        File filefolder =new File(filesPath);
+
+        for (User user  :returnlist){
+            System.out.println("esto es la lista"+ user.getNombre());
+
+        }
+
+        if (filefolder!=null){
+            for (User o:returnlist){
+                for (final File file:filefolder.listFiles()){
+
+                    if (o.getPerfil().equals(file.getName())){
+                        System.out.println("image "+o.getPerfil());
+                        if(!file.isDirectory()){
+                            String encodeBase64=null;
+                            try{
+                                String extension= FilenameUtils.getExtension(file.getName());
+                                FileInputStream fileInputStream=new FileInputStream(file);
+                                byte[]bytes=new byte[(int)file.length()];
+                                fileInputStream.read(bytes);
+                                encodeBase64= Base64.getEncoder().encodeToString(bytes);
+                                historiaHVA.add("data:image/"+extension+";base64,"+encodeBase64);
+                                fileInputStream.close();;
+
+                            }catch(Exception e){
+
+
+                            }
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        return new ResponseEntity<List<String>>(historiaHVA, HttpStatus.OK);
+    }
+
+
+  
     ////////////////////////////////////////////////////////////////////
     /*list of users comentars on raw salud*/
 
