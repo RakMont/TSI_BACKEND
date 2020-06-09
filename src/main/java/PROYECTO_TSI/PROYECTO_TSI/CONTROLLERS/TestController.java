@@ -579,6 +579,237 @@ public class TestController {
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));
     }
+    @PostMapping("/updateprofilemoderator")
+    public ResponseEntity<?> updateprofilemoderator(@Valid @RequestBody UpdateRequest signUpRequest) {
+
+        Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
+
+        if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
+            System.out.println("entra a username diferente");
+            if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Username is already taken!"));
+            }
+            else{
+                System.out.println("entra a no hay otros usernames iguales diferente");
+                LoginRequest loginRequest=new LoginRequest();
+                loginRequest.setPassword(signUpRequest.getPassword());
+                loginRequest.setPassword(signUpRequest.getUsername());
+
+                ///////////////////////////////////////////////////////////////////////
+                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                System.out.println("muere 1");
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jwt = jwtUtils.generateJwtToken(authentication);
+                System.out.println("muere 2");
+
+                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+                List<String> roles = userDetails.getAuthorities().stream()
+                        .map(item -> item.getAuthority())
+                        .collect(Collectors.toList());
+                System.out.println("muere 3");
+
+                if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
+                    System.out.println("entra a email diferente");
+
+                    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Email is already in use!"));
+                    }
+                }
+                User user = new User(signUpRequest.getUsername(),
+                        signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()));
+
+                Set<String> strRoles = signUpRequest.getRole();
+                Set<Role> roles2 = new HashSet<>();
+
+                Role userRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles2.add(userRole);
+                user.setPerfil(signUpRequest.getPerfil());
+                user.setGenero(signUpRequest.getGenero());
+                user.setTelefono(signUpRequest.getTelefono());
+                user.setNombre(signUpRequest.getNombre());
+                user.setApellido(signUpRequest.getApellido());
+                user.setLugar_acogida(signUpRequest.getLugar_acogida());
+                String prueba=signUpRequest.getFecha_nacimiento();
+                prueba=prueba.substring(0,10);
+                Date fechaprueba=Date.valueOf(prueba);
+                user.setFecha_nacimiento(fechaprueba);
+                user.setRoles(roles2);
+                user.setId(signUpRequest.getId());
+                userRepository.save(user);
+                return ResponseEntity.ok(new JwtResponse(jwt,
+                        userDetails.getId(),
+                        userDetails.getUsername(),
+                        userDetails.getEmail(),
+                        roles));
+                //////////////////////////////////////////////////////////////////////
+            }
+        }
+
+        if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
+            System.out.println("entra a email diferente");
+
+            if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Email is already in use!"));
+            }
+        }
+
+
+
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        Role userRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+
+        user.setPerfil(signUpRequest.getPerfil());
+        user.setGenero(signUpRequest.getGenero());
+        user.setTelefono(signUpRequest.getTelefono());
+        user.setNombre(signUpRequest.getNombre());
+        user.setApellido(signUpRequest.getApellido());
+        user.setLugar_acogida(signUpRequest.getLugar_acogida());
+        String prueba=signUpRequest.getFecha_nacimiento();
+        prueba=prueba.substring(0,10);
+        Date fechaprueba=Date.valueOf(prueba);
+        user.setFecha_nacimiento(fechaprueba);
+        user.setRoles(roles);
+        user.setId(signUpRequest.getId());
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));
+    }
+    @PostMapping("/updateprofileadmin")
+    public ResponseEntity<?> updateprofileadmin(@Valid @RequestBody UpdateRequest signUpRequest) {
+
+        Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
+
+        if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
+            System.out.println("entra a username diferente");
+            if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Username is already taken!"));
+            }
+            else{
+                System.out.println("entra a no hay otros usernames iguales diferente");
+                LoginRequest loginRequest=new LoginRequest();
+                loginRequest.setPassword(signUpRequest.getPassword());
+                loginRequest.setPassword(signUpRequest.getUsername());
+
+                ///////////////////////////////////////////////////////////////////////
+                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
+
+                Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                System.out.println("muere 1");
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jwt = jwtUtils.generateJwtToken(authentication);
+                System.out.println("muere 2");
+
+                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+                List<String> roles = userDetails.getAuthorities().stream()
+                        .map(item -> item.getAuthority())
+                        .collect(Collectors.toList());
+                System.out.println("muere 3");
+
+                if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
+                    System.out.println("entra a email diferente");
+
+                    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                        return ResponseEntity
+                                .badRequest()
+                                .body(new MessageResponse("Error: Email is already in use!"));
+                    }
+                }
+                User user = new User(signUpRequest.getUsername(),
+                        signUpRequest.getEmail(),
+                        encoder.encode(signUpRequest.getPassword()));
+
+                Set<String> strRoles = signUpRequest.getRole();
+                Set<Role> roles2 = new HashSet<>();
+
+                Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                        .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+                roles2.add(userRole);
+                user.setPerfil(signUpRequest.getPerfil());
+                user.setGenero(signUpRequest.getGenero());
+                user.setTelefono(signUpRequest.getTelefono());
+                user.setNombre(signUpRequest.getNombre());
+                user.setApellido(signUpRequest.getApellido());
+                user.setLugar_acogida(signUpRequest.getLugar_acogida());
+                String prueba=signUpRequest.getFecha_nacimiento();
+                prueba=prueba.substring(0,10);
+                Date fechaprueba=Date.valueOf(prueba);
+                user.setFecha_nacimiento(fechaprueba);
+                user.setRoles(roles2);
+                user.setId(signUpRequest.getId());
+                userRepository.save(user);
+                return ResponseEntity.ok(new JwtResponse(jwt,
+                        userDetails.getId(),
+                        userDetails.getUsername(),
+                        userDetails.getEmail(),
+                        roles));
+                //////////////////////////////////////////////////////////////////////
+            }
+        }
+
+        if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
+            System.out.println("entra a email diferente");
+
+            if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+                return ResponseEntity
+                        .badRequest()
+                        .body(new MessageResponse("Error: Email is already in use!"));
+            }
+        }
+
+
+
+        // Create new user's account
+        User user = new User(signUpRequest.getUsername(),
+                signUpRequest.getEmail(),
+                encoder.encode(signUpRequest.getPassword()));
+
+        Set<String> strRoles = signUpRequest.getRole();
+        Set<Role> roles = new HashSet<>();
+
+        Role userRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+
+        user.setPerfil(signUpRequest.getPerfil());
+        user.setGenero(signUpRequest.getGenero());
+        user.setTelefono(signUpRequest.getTelefono());
+        user.setNombre(signUpRequest.getNombre());
+        user.setApellido(signUpRequest.getApellido());
+        user.setLugar_acogida(signUpRequest.getLugar_acogida());
+        String prueba=signUpRequest.getFecha_nacimiento();
+        prueba=prueba.substring(0,10);
+        Date fechaprueba=Date.valueOf(prueba);
+        user.setFecha_nacimiento(fechaprueba);
+        user.setRoles(roles);
+        user.setId(signUpRequest.getId());
+        userRepository.save(user);
+        return ResponseEntity.ok(new MessageResponse("ADMINISTRADOR ACTUALIZADO EXITOSAMENTE!"));
+    }
+
 
     @GetMapping("/user")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
