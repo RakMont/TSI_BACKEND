@@ -756,7 +756,7 @@ public List<Comentario> listComentariosRawEducacion(){
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            //System.out.println("size is "+ c.getComentario().length());
+            System.out.println("the roles here are  "+ c.getUser().getRoles());
             if (c.getId_comentario_ref()==0 && c.getReferente()==4){
                 returnList.add(c);
             }
@@ -795,29 +795,24 @@ public List<Comentario> listComentariosRawEducacion(){
     }
     @PostMapping(path = {"/agregarComentarioTrabajo"})
     public Comentario agregarComentarioTrabajo(@RequestBody Comentario p) {
-        System.out.println("refTrabajo");
 
-        System.out.println(p.getUser());
         p.setReferente(1);
         return comentarioService.agregar(p);
     }
     @PostMapping(path = {"/agregarComentarioVivienda"})
     public Comentario agregarComentarioVivienda(@RequestBody Comentario p) {
-        System.out.println("refsalud");
 
         p.setReferente(2);
         return comentarioService.agregar(p);
     }
     @PostMapping(path = {"/agregarComentarioEducacion"})
     public Comentario agregarComentarioEducacion(@RequestBody Comentario p) {
-        System.out.println("refsalud");
 
         p.setReferente(3);
         return comentarioService.agregar(p);
     }
     @PostMapping(path = {"/agregarComentarioSalud"})
     public Comentario agregarComentarioSalud(@RequestBody Comentario p) {
-        System.out.println("refsalud");
 
         p.setReferente(4);
         return comentarioService.agregar(p);
@@ -826,29 +821,21 @@ public List<Comentario> listComentariosRawEducacion(){
 
     @PutMapping(path = {"/editarComentarioTrabajo"})
     public Comentario editarComentarioTrabajo(@RequestBody Comentario p) {
-        System.out.println("refsalud");
-
         p.setReferente(1);
         return comentarioService.edit(p);
     }
     @PutMapping(path = {"/editarComentarioVivienda"})
     public Comentario editarComentarioVivienda(@RequestBody Comentario p) {
-        System.out.println("refsalud");
-
         p.setReferente(2);
         return comentarioService.edit(p);
     }
     @PutMapping(path = {"/editarComentarioEducacion"})
     public Comentario editarComentarioEducacion(@RequestBody Comentario p) {
-        System.out.println("refsalud");
-
         p.setReferente(3);
         return comentarioService.edit(p);
     }
     @PutMapping(path = {"/editarComentarioSalud"})
     public Comentario editarComentarioSalud(@RequestBody Comentario p) {
-        System.out.println("refsalud");
-
         p.setReferente(4);
         return comentarioService.edit(p);
     }

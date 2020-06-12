@@ -1,6 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 
@@ -17,6 +18,7 @@ public class Convenio {
     private String institucion;
 
     @Column
+    @Size(max = 500)
     private String descripcion;
 
     @Column

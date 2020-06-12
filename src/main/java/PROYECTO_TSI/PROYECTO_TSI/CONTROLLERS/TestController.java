@@ -1,7 +1,9 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
+import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.ComentarioService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.UserDetailsImp;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.*;
+import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.ComentarioRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.RoleRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.UserRepository;
 import PROYECTO_TSI.PROYECTO_TSI.Security.JwtUtils;
@@ -39,6 +41,8 @@ public class TestController {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ComentarioRepository comentarioRepository;
     @Autowired
     RoleRepository roleRepository;
     @Autowired
@@ -456,8 +460,18 @@ public class TestController {
     @DeleteMapping(path = {"/deleteuser/{username}"})
     public User deleteuser(@PathVariable("username") String username) {
         Optional<User> user= userRepository.findByUsername(username);
+        List<Comentario>comentarioList=comentarioRepository.findAll();
         User user2=user.get();
+        System.out.println("el id del usuario es "+user2.getId());
         if (user2!=null){
+            for (Comentario c:comentarioList){
+                System.out.println("el cmentario es"+c.getComentario()+"id "+c.getUser().getId());
+                if (c.getUser().getId()==user2.getId()){
+                    System.out.println("entra a esta lista");
+                    comentarioRepository.delete(c);
+                }
+            }
+            user2.getRoles().clear();
             userRepository.delete(user2);
         }
         System.out.println("id es"+user2.getId());
@@ -465,10 +479,9 @@ public class TestController {
     }
 
     @PostMapping("/updateprofile")
-    public ResponseEntity<?> editprofile(@Valid @RequestBody UpdateRequest signUpRequest) {
-
+    public ResponseEntity<?> editprofile(@RequestBody UpdateRequest signUpRequest) {
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
-
+        //System.out.println("este es el usuario " + prueba2.get().getUsername()+prueba2.get().getPassword());
         if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
             System.out.println("entra a username diferente");
             if (userRepository.existsByUsername(signUpRequest.getUsername())) {
@@ -480,24 +493,12 @@ public class TestController {
                 System.out.println("entra a no hay otros usernames iguales diferente");
                 LoginRequest loginRequest=new LoginRequest();
                 loginRequest.setPassword(signUpRequest.getPassword());
-                loginRequest.setPassword(signUpRequest.getUsername());
+                loginRequest.setUsername(signUpRequest.getUsername());
 
             ///////////////////////////////////////////////////////////////////////
-                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
+                //System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
 
-                Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-                System.out.println("muere 1");
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String jwt = jwtUtils.generateJwtToken(authentication);
-                System.out.println("muere 2");
-
-                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
-                List<String> roles = userDetails.getAuthorities().stream()
-                        .map(item -> item.getAuthority())
-                        .collect(Collectors.toList());
-                System.out.println("muere 3");
 
                 if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
                     System.out.println("entra a email diferente");
@@ -531,11 +532,28 @@ public class TestController {
                 user.setRoles(roles2);
                 user.setId(signUpRequest.getId());
                 userRepository.save(user);
-                return ResponseEntity.ok(new JwtResponse(jwt,
+               /* Authentication authentication = authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+                System.out.println("muere 1");
+
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                String jwt = jwtUtils.generateJwtToken(authentication);
+                System.out.println("muere 2");
+
+                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
+                List<String> roles = userDetails.getAuthorities().stream()
+                        .map(item -> item.getAuthority())
+                        .collect(Collectors.toList());
+                System.out.println("muere 3");*/
+                System.out.println("username "+ loginRequest.getUsername()+ "  Passowrd "+loginRequest.getPassword());
+               AuthController authController=new AuthController();
+               authController.authenticateUser(loginRequest);
+                /*return ResponseEntity.ok(new JwtResponse(jwt,
                         userDetails.getId(),
                         userDetails.getUsername(),
                         userDetails.getEmail(),
-                        roles));
+                        roles));*/
+                ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));
                 //////////////////////////////////////////////////////////////////////
             }
         }
