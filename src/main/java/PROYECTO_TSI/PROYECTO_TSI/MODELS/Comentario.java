@@ -4,9 +4,7 @@ package PROYECTO_TSI.PROYECTO_TSI.MODELS;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
-import java.awt.*;
 import java.sql.Date;
-import java.util.Objects;
 
 @Entity
 @Table(name="Comentario")
