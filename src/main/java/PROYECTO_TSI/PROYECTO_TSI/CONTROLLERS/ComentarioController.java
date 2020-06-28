@@ -16,7 +16,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
-@CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
+//@CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping({"/comentarios"})
 public class ComentarioController {
