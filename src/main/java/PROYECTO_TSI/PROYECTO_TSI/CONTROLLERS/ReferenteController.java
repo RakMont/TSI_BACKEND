@@ -1,7 +1,6 @@
-package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
-
-
+import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaVideoService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.ReferenteService;
+import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Referente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -21,18 +20,21 @@ public class ReferenteController {
     public Referente getReferenteTrabajo() {
         List<Referente> lista=referenteService.listar();
         Referente trabajo=lista.get(0);
+        //return referenteService.listarId(id);
         return trabajo;
     }
     @GetMapping(path = {"/getReferenteVivienda"})
     public Referente getReferenteVivienda() {
         List<Referente> lista=referenteService.listar();
         Referente trabajo=lista.get(1);
+        //return referenteService.listarId(id);
         return trabajo;
     }
     @GetMapping(path = {"/getReferenteEducacion"})
     public Referente getReferenteEducacion() {
         List<Referente> lista=referenteService.listar();
         Referente trabajo=lista.get(2);
+        //return referenteService.listarId(id);
         return trabajo;
     }
     @GetMapping(path = {"/getReferenteSalud"})
@@ -75,21 +77,28 @@ public class ReferenteController {
 
     @PutMapping(path = {"/editarReferenteTrabajo"})
     public Referente editarReferenteTrabajo(@RequestBody Referente p) {
+        System.out.println("reftrabajo");
         p.setId_referente(1);
         return referenteService.edit(p);
     }
     @PutMapping(path = {"/editarReferenteVivienda"})
     public Referente editarReferenteVivienda(@RequestBody Referente p) {
+        System.out.println("refvivienda");
+
         p.setId_referente(2);
         return referenteService.edit(p);
     }
     @PutMapping(path = {"/editarReferenteEducacion"})
     public Referente editarReferenteEducacion(@RequestBody Referente p) {
+        System.out.println("refeducacion");
+
         p.setId_referente(3);
         return referenteService.edit(p);
     }
     @PutMapping(path = {"/editarReferenteSalud"})
     public Referente editarReferenteSalud(@RequestBody Referente p) {
+        System.out.println("refsalud");
+
         p.setId_referente(4);
         return referenteService.edit(p);
     }
