@@ -1,9 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Mision;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaTextoRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.MisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -30,7 +30,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -79,10 +78,6 @@ public class TestController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
@@ -138,11 +133,6 @@ public class TestController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
-
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
@@ -190,17 +180,12 @@ public class TestController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
 
                 for (final File file:filefolder.listFiles()){
 
                     if (file.getName().equals(profiles)) {
-                        System.out.println("esto es la lista"+ file.getName());
 
                         if (!file.isDirectory()) {
                             String encodeBase64 = null;
@@ -254,7 +239,6 @@ public class TestController {
         //List<User> lista = new ArrayList<User>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( User o:returnlist){
             lista.add(returnlist.get(lenght-aux));
             aux++;
@@ -263,10 +247,6 @@ public class TestController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
             for (User o:lista){
@@ -311,35 +291,29 @@ public class TestController {
         if (file2.isPresent()) {
             MultipartFile file = file2.get();
             if (user.getPerfil().equals(file.getOriginalFilename())) {
-                System.out.println("entra a imprimir el mismo");
                 userRepository.save(user);
                 return new ResponseEntity<Response>(new Response("user saved succesfull"), HttpStatus.OK);
             }
             else{
                 if (user.getPerfil().equals(file.getOriginalFilename()))
                 {
-                    System.out.println("entra a imprimir el mismo");
                     userRepository.save(user);
                     return new ResponseEntity<Response>(new Response("user saved succesfull"), HttpStatus.OK);
                 }
                 else{
-                    System.out.println("entra a eliminar");
 
                     String auxiliar = user.getPerfil();
                     File fileToDelete = new File("src/main/webApp/profiles/"+auxiliar);
-                    System.out.println("this is the name"+fileToDelete.getName());
                     fileToDelete.delete();
 
                     user.setPerfil(file.getOriginalFilename());
 
                     boolean isExist = new java.io.File(context.getRealPath("/profiles/")).exists();
                     if(!isExist){
-                        System.out.println("creating directory");
                         new java.io.File(context.getRealPath("/profiles/")).mkdir();
                     }
                     String filename = file.getOriginalFilename();
                     String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-                    //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
                     File serverfile=new java.io.File(context.getRealPath("/profiles/"+ java.io.File.separator+modifiedFilename));
 
@@ -357,7 +331,6 @@ public class TestController {
 
         else
         {
-            System.out.println("no cambiaron nada");
             userRepository.save(user);
             return new ResponseEntity<Response>(new Response(" saved succesfull"), HttpStatus.OK);
         }
@@ -376,22 +349,17 @@ public class TestController {
     {
         User user=new ObjectMapper().readValue(audio,User.class);
         user.setPerfil(file.getOriginalFilename());
-        //System.out.println("first time"+user.getUsername()+ " "+user.getPassword());
         Optional<User> user2=userRepository.findByUsername(user.getUsername());
         user.setPassword(user2.get().getPassword());
-       // System.out.println("second time"+user.getUsername()+ " "+user.getPassword());
 
         boolean isExist = new java.io.File(context.getRealPath("/profiles/")).exists();
         if(!isExist){
-            System.out.println("creating directory");
             new java.io.File(context.getRealPath("/profiles/")).mkdir();
         }
         String filename = file.getOriginalFilename();
         String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
         File serverfile=new java.io.File(context.getRealPath("/profiles/"+ java.io.File.separator+modifiedFilename));
-
         try{
             FileUtils.writeByteArrayToFile(serverfile,file.getBytes());
         }catch (Exception e){
@@ -462,46 +430,37 @@ public class TestController {
         Optional<User> user= userRepository.findByUsername(username);
         List<Comentario>comentarioList=comentarioRepository.findAll();
         User user2=user.get();
-        System.out.println("el id del usuario es "+user2.getId());
         if (user2!=null){
             for (Comentario c:comentarioList){
-                System.out.println("el cmentario es"+c.getComentario()+"id "+c.getUser().getId());
                 if (c.getUser().getId()==user2.getId()){
-                    System.out.println("entra a esta lista");
                     comentarioRepository.delete(c);
                 }
             }
             user2.getRoles().clear();
             userRepository.delete(user2);
         }
-        System.out.println("id es"+user2.getId());
         return user2;
     }
 
     @PostMapping("/updateprofile")
     public ResponseEntity<?> editprofile(@RequestBody UpdateRequest signUpRequest) {
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
-        //System.out.println("este es el usuario " + prueba2.get().getUsername()+prueba2.get().getPassword());
         if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
-            System.out.println("entra a username diferente");
             if (userRepository.existsByUsername(signUpRequest.getUsername())) {
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
             }
             else{
-                System.out.println("entra a no hay otros usernames iguales diferente");
                 LoginRequest loginRequest=new LoginRequest();
                 loginRequest.setPassword(signUpRequest.getPassword());
                 loginRequest.setUsername(signUpRequest.getUsername());
 
             ///////////////////////////////////////////////////////////////////////
-                //System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
 
 
 
                 if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-                    System.out.println("entra a email diferente");
 
                     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                         return ResponseEntity
@@ -532,39 +491,20 @@ public class TestController {
                 user.setRoles(roles2);
                 user.setId(signUpRequest.getId());
                 userRepository.save(user);
-               /* Authentication authentication = authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-                System.out.println("muere 1");
 
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                String jwt = jwtUtils.generateJwtToken(authentication);
-                System.out.println("muere 2");
-
-                UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
-                List<String> roles = userDetails.getAuthorities().stream()
-                        .map(item -> item.getAuthority())
-                        .collect(Collectors.toList());
-                System.out.println("muere 3");*/
-                System.out.println("username "+ loginRequest.getUsername()+ "  Passowrd "+loginRequest.getPassword());
                AuthController authController=new AuthController();
                authController.authenticateUser(loginRequest);
-                /*return ResponseEntity.ok(new JwtResponse(jwt,
-                        userDetails.getId(),
-                        userDetails.getUsername(),
-                        userDetails.getEmail(),
-                        roles));*/
+
                 ResponseEntity.ok(new MessageResponse("USUARIO REGISTRADO EXITOSAMENTE!"));
                 //////////////////////////////////////////////////////////////////////
             }
         }
 
         if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-            System.out.println("entra a email diferente");
-
             if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                     return ResponseEntity
                             .badRequest()
-                            .body(new MessageResponse("Error: Email is already in use!"));
+                            .body(new MessageResponse("Error: Correo ya en uso!"));
                 }
         }
 
@@ -603,37 +543,30 @@ public class TestController {
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
 
         if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
-            System.out.println("entra a username diferente");
             if (userRepository.existsByUsername(signUpRequest.getUsername())) {
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
             }
             else{
-                System.out.println("entra a no hay otros usernames iguales diferente");
                 LoginRequest loginRequest=new LoginRequest();
                 loginRequest.setPassword(signUpRequest.getPassword());
                 loginRequest.setPassword(signUpRequest.getUsername());
 
                 ///////////////////////////////////////////////////////////////////////
-                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
 
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-                System.out.println("muere 1");
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String jwt = jwtUtils.generateJwtToken(authentication);
-                System.out.println("muere 2");
 
                 UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
                 List<String> roles = userDetails.getAuthorities().stream()
                         .map(item -> item.getAuthority())
                         .collect(Collectors.toList());
-                System.out.println("muere 3");
 
                 if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-                    System.out.println("entra a email diferente");
 
                     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                         return ResponseEntity
@@ -674,7 +607,6 @@ public class TestController {
         }
 
         if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-            System.out.println("entra a email diferente");
 
             if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                 return ResponseEntity
@@ -718,37 +650,30 @@ public class TestController {
         Optional<User> prueba2=userRepository.findById(signUpRequest.getId());
 
         if (!(prueba2.get().getUsername().equals(signUpRequest.getUsername()))){
-            System.out.println("entra a username diferente");
             if (userRepository.existsByUsername(signUpRequest.getUsername())) {
                 return ResponseEntity
                         .badRequest()
                         .body(new MessageResponse("Error: Username is already taken!"));
             }
             else{
-                System.out.println("entra a no hay otros usernames iguales diferente");
                 LoginRequest loginRequest=new LoginRequest();
                 loginRequest.setPassword(signUpRequest.getPassword());
                 loginRequest.setPassword(signUpRequest.getUsername());
 
                 ///////////////////////////////////////////////////////////////////////
-                System.out.println("user name"+signUpRequest.getUsername()+"  password" + signUpRequest.getPassword());
 
                 Authentication authentication = authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-                System.out.println("muere 1");
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 String jwt = jwtUtils.generateJwtToken(authentication);
-                System.out.println("muere 2");
 
                 UserDetailsImp userDetails = (UserDetailsImp) authentication.getPrincipal();
                 List<String> roles = userDetails.getAuthorities().stream()
                         .map(item -> item.getAuthority())
                         .collect(Collectors.toList());
-                System.out.println("muere 3");
 
                 if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-                    System.out.println("entra a email diferente");
 
                     if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                         return ResponseEntity
@@ -789,7 +714,6 @@ public class TestController {
         }
 
         if (!(prueba2.get().getEmail().equals(signUpRequest.getEmail()))){
-            System.out.println("entra a email diferente");
 
             if (userRepository.existsByEmail(signUpRequest.getEmail())) {
                 return ResponseEntity

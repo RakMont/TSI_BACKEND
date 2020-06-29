@@ -2,8 +2,6 @@ package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.PodcastService;
-import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.TemaService;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Podcast;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Tema;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.TemaRepository;
@@ -43,39 +41,31 @@ public class PodcastController {
 
     @PostMapping(value = "UpdatePodcastFile")
     public ResponseEntity<Response> UpdatePodcastFile(@RequestParam("file") Optional<MultipartFile> file2, @RequestParam("podcast") String podcast) throws JsonParseException, JsonMappingException, IOException {
-        System.out.println("llega a la funcion");
 
         Podcast podcast1 = new ObjectMapper().readValue(podcast, Podcast.class);
-            System.out.println("llega a not null");
             if (file2.isPresent()) {
                 MultipartFile file = file2.get();
                 if (podcast1.getArchivoMP3().equals(file.getOriginalFilename())) {
-                    System.out.println("entra a imprimir el mismo");
                     podcastService.edit(podcast1);
                     return new ResponseEntity<Response>(new Response("historia saved succesfull"), HttpStatus.OK);
                 } else {
                     if (podcast1.getArchivoMP3().equals(file.getOriginalFilename())) {
-                        System.out.println("entra a imprimir el mismo");
                         podcastService.edit(podcast1);
                         return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
                     } else {
-                        System.out.println("entra a eliminar");
 
                         String auxiliar = podcast1.getArchivoMP3();
                         File fileToDelete = new File("src/main/webApp/podcasts/" + auxiliar);
-                        System.out.println("this is the name" + fileToDelete.getName());
                         fileToDelete.delete();
 
                         podcast1.setArchivoMP3(file.getOriginalFilename());
 
                         boolean isExist = new java.io.File(context.getRealPath("/podcasts/")).exists();
                         if (!isExist) {
-                            System.out.println("creating directory");
                             new java.io.File(context.getRealPath("/podcasts/")).mkdir();
                         }
                         String filename = file.getOriginalFilename();
                         String modifiedFilename = FilenameUtils.getBaseName(filename) + "_" + System.currentTimeMillis() + "." + FilenameUtils.getExtension(filename);
-                        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
                         File serverfile = new java.io.File(context.getRealPath("/podcasts/" + java.io.File.separator + modifiedFilename));
 
@@ -88,13 +78,11 @@ public class PodcastController {
 
                         Date date = Date.valueOf(LocalDate.now());
                         podcast1.setFecha(date);
-                        // HistoriaVidaAudio historiaVidaAudio1=historiaVidaAudioService.agregar(historiaVidaAudio);
                         Podcast podcast2 = podcastService.edit(podcast1);
 
                     }
                 }
             } else {
-                System.out.println("no cambiaron nada");
                 podcastService.edit(podcast1);
                 return new ResponseEntity<Response>(new Response("Convenio saved succesfull"), HttpStatus.OK);
             }
@@ -125,7 +113,6 @@ public class PodcastController {
         List<Podcast> lista = new ArrayList<Podcast>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( Podcast o:list){
             lista.add(list.get(lenght-aux));
             aux++;
@@ -133,11 +120,6 @@ public class PodcastController {
         ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
-
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
             for (Podcast o:lista){
@@ -178,7 +160,6 @@ public class PodcastController {
         List<Podcast> lista = new ArrayList<Podcast>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( Podcast o:list){
             lista.add(list.get(lenght-aux));
             aux++;
@@ -189,7 +170,6 @@ public class PodcastController {
     public List<Podcast> listarByEspecie(@PathVariable("id") int id) {
         Tema tema=temaRepository.findById(id);
         String  temaName = tema.getNombreTema();
-        System.out.println("el tema es "+tema.getNombreTema());
         return podcastService.listarPorTema(tema);
     }
 
@@ -202,12 +182,10 @@ public class PodcastController {
 
         Tema tema=temaRepository.findById(id);
         String  temaName = tema.getNombreTema();
-        System.out.println("el tema es "+tema.getNombreTema());
         List<Podcast>list=podcastService.listarPorTema(tema);
         List<Podcast> lista = new ArrayList<Podcast>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( Podcast o:list){
             lista.add(list.get(lenght-aux));
             aux++;
@@ -215,11 +193,6 @@ public class PodcastController {
 
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
-
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
             for (Podcast o:lista){
@@ -290,17 +263,13 @@ public class PodcastController {
     {
         Podcast podcast1=new ObjectMapper().readValue(podcast,Podcast.class);
         if (podcastService.agregar(podcast1)!=null){
-            System.out.println("el tema no es null");
             podcast1.setArchivoMP3(file.getOriginalFilename());
             boolean isExist = new java.io.File(context.getRealPath("/podcasts/")).exists();
             if(!isExist){
-                System.out.println("creating directory");
                 new java.io.File(context.getRealPath("/podcasts/")).mkdir();
             }
             String filename = file.getOriginalFilename();
             String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-            //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
-
             File serverfile=new java.io.File(context.getRealPath("/podcasts/"+ java.io.File.separator+modifiedFilename));
 
             try{

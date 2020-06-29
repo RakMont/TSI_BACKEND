@@ -16,7 +16,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.*;
 
-//@CrossOrigin(origins = "http://localhost:4200",maxAge = 3600)
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping({"/comentarios"})
@@ -35,7 +34,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==4){
                 returnList.add(c);
             }
@@ -68,17 +66,12 @@ public class ComentarioController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
-
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
+
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -114,7 +107,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==3){
                 returnList.add(c);
             }
@@ -141,23 +133,14 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
-
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -192,7 +175,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==2){
                 returnList.add(c);
             }
@@ -219,23 +201,13 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
-
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
-
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -269,7 +241,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==1){
                 returnList.add(c);
             }
@@ -296,23 +267,15 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -349,7 +312,7 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
+
             if (c.getId_comentario_ref()==0 && c.getReferente()==4){
                 returnList.add(c);
             }
@@ -376,23 +339,13 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
-
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
-
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -428,7 +381,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()==0 && c.getReferente()==3){
                 returnList.add(c);
             }
@@ -455,23 +407,15 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -506,7 +450,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()==0 && c.getReferente()==2){
                 returnList.add(c);
             }
@@ -533,23 +476,15 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -583,7 +518,6 @@ public class ComentarioController {
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("size is "+c.toString());
             if (c.getId_comentario_ref()==0 && c.getReferente()==1){
                 returnList.add(c);
             }
@@ -610,23 +544,15 @@ public class ComentarioController {
         List<String> historiaHVA=new ArrayList<String>();
         String filesPath =context.getRealPath("/profiles");
 
-        /////////////////////////////////////////////////////
-
-        ///////////////////////////////////////////////////
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (User user  :returnlist){
-            System.out.println("esto es la lista"+ user.getNombre());
-
-        }
 
         if (filefolder!=null){
             for (User o:returnlist){
                 for (final File file:filefolder.listFiles()){
 
                     if (o.getPerfil().equals(file.getName())){
-                        System.out.println("image "+o.getPerfil());
                         if(!file.isDirectory()){
                             String encodeBase64=null;
                             try{
@@ -661,7 +587,6 @@ public List<Comentario> listComentariosRawTrabajo(){
     List<Comentario>returnList= new ArrayList<Comentario>();
 
     for (Comentario c:list){
-        System.out.println("size is "+c.toString());
         if (c.getId_comentario_ref()==0 && c.getReferente()==1){
             returnList.add(c);
         }
@@ -693,7 +618,6 @@ public List<Comentario> listComentariosRawVivienda(){
     List<Comentario>returnList= new ArrayList<Comentario>();
 
     for (Comentario c:list){
-        //System.out.println("size is "+ c.getComentario().length());
         if (c.getId_comentario_ref()==0 && c.getReferente()==2){
             returnList.add(c);
         }
@@ -707,7 +631,6 @@ public List<Comentario> listComentariosRawVivienda(){
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            //System.out.println("size is "+ c.getComentario().length());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==2){
                 returnList.add(c);
             }
@@ -725,7 +648,6 @@ public List<Comentario> listComentariosRawEducacion(){
     List<Comentario>returnList= new ArrayList<Comentario>();
 
     for (Comentario c:list){
-        //System.out.println("size is "+ c.getComentario().length());
         if (c.getId_comentario_ref()==0 && c.getReferente()==3){
             returnList.add(c);
         }
@@ -739,7 +661,6 @@ public List<Comentario> listComentariosRawEducacion(){
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            //System.out.println("size is "+ c.getComentario().length());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==3){
                 returnList.add(c);
             }
@@ -749,7 +670,6 @@ public List<Comentario> listComentariosRawEducacion(){
 
 ///////////////////////////////////////////////////////////////////////////////////
 
-    ///////////////////////////////////////////////////////////////////////////////////
     /*REFERENTE SALUD*/
     @GetMapping(path = {"/listComentariosRawSalud"})
     public List<Comentario> listComentariosRawSalud(){
@@ -757,7 +677,6 @@ public List<Comentario> listComentariosRawEducacion(){
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            System.out.println("the roles here are  "+ c.getUser().getRoles());
             if (c.getId_comentario_ref()==0 && c.getReferente()==4){
                 returnList.add(c);
             }
@@ -771,7 +690,6 @@ public List<Comentario> listComentariosRawEducacion(){
         List<Comentario>returnList= new ArrayList<Comentario>();
 
         for (Comentario c:list){
-            //System.out.println("size is "+ c.getComentario().length());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==4){
                 returnList.add(c);
             }
@@ -784,9 +702,7 @@ public List<Comentario> listComentariosRawEducacion(){
     @GetMapping
     public List<Comentario> listar() {
         List<Comentario>list=comentarioService.listar();
-        for (Comentario c:list){
-            System.out.println("size is "+ c.getComentario().length());
-        }
+
         return comentarioService.listar();
     }
 

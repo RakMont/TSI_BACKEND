@@ -28,8 +28,6 @@ public class EmailSender {
 
     @RequestMapping("/getdetails")
     public @ResponseBody Details sendMail(@RequestBody Details details) throws Exception {
-        System.out.println("llega aqui y pasa "+details.getEmail()+"name : "+details.getName()+"message"+details.getMessage());
-
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,
                 MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
@@ -42,9 +40,7 @@ public class EmailSender {
 
         Context context = new Context();
         context.setVariables(model);
-        System.out.println("llega aqui y pasa ");
         String html = templateEngine.process("email-template", context);
-        System.out.println("llega aqui y pasa 2");
 
         try {
             // helper.setTo(details.getEmail());

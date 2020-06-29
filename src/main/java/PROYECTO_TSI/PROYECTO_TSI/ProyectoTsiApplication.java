@@ -50,7 +50,7 @@ public class ProyectoTsiApplication {
 		} else {
 			System.out.println("Directory already exists");
 		}
-		path=Paths.get(fileName3);
+		path=Paths.get(fileName4);
 		if (!Files.exists(path)) {
 			Files.createDirectory(path);
 			System.out.println("Directory created");

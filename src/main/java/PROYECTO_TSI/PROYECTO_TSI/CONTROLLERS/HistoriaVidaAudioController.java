@@ -2,14 +2,10 @@ package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaAudioService;
-import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaVideoService;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.TeOfrecemos;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.catalina.session.FileStore;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,15 +13,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import javax.servlet.ServletContext;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -51,12 +42,10 @@ public class HistoriaVidaAudioController {
         historiaVidaAudio.setArchivo_mp3(file.getOriginalFilename());
         boolean isExist = new java.io.File(context.getRealPath("/historiaHVA/")).exists();
         if(!isExist){
-            System.out.println("creating directory");
             new java.io.File(context.getRealPath("/historiaHVA/")).mkdir();
     }
         String filename = file.getOriginalFilename();
         String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
         File serverfile=new java.io.File(context.getRealPath("/historiaHVA/"+ java.io.File.separator+modifiedFilename));
 
@@ -90,35 +79,29 @@ public class HistoriaVidaAudioController {
         if (file2.isPresent()) {
             MultipartFile file = file2.get();
             if (historiaVidaAudio.getArchivo_mp3().equals(file.getOriginalFilename())) {
-                System.out.println("entra a imprimir el mismo");
                 historiaVidaAudioService.edit(historiaVidaAudio);
                 return new ResponseEntity<Response>(new Response("historia saved succesfull"), HttpStatus.OK);
             }
             else{
                 if (historiaVidaAudio.getArchivo_mp3().equals(file.getOriginalFilename()))
                 {
-                    System.out.println("entra a imprimir el mismo");
                     historiaVidaAudioService.edit(historiaVidaAudio);
                     return new ResponseEntity<Response>(new Response("Audio saved succesfull"), HttpStatus.OK);
                 }
                 else{
-                    System.out.println("entra a eliminar");
 
                     String auxiliar = historiaVidaAudio.getArchivo_mp3();
                     File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
-                    System.out.println("this is the name"+fileToDelete.getName());
                     fileToDelete.delete();
 
                     historiaVidaAudio.setArchivo_mp3(file.getOriginalFilename());
 
                     boolean isExist = new java.io.File(context.getRealPath("/historiaHVA/")).exists();
                     if(!isExist){
-                        System.out.println("creating directory");
                         new java.io.File(context.getRealPath("/historiaHVA/")).mkdir();
                     }
                     String filename = file.getOriginalFilename();
                     String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-                    //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
                     File serverfile=new java.io.File(context.getRealPath("/historiaHVA/"+ java.io.File.separator+modifiedFilename));
 
@@ -140,7 +123,6 @@ public class HistoriaVidaAudioController {
 
         else
         {
-            System.out.println("no cambiaron nada");
             historiaVidaAudioService.edit(historiaVidaAudio);
             return new ResponseEntity<Response>(new Response("Convenio saved succesfull"), HttpStatus.OK);
         }
@@ -166,7 +148,6 @@ public class HistoriaVidaAudioController {
         List<HistoriaVidaAudio> lista = new ArrayList<HistoriaVidaAudio>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( HistoriaVidaAudio o:list){
             lista.add(list.get(lenght-aux));
             aux++;
@@ -175,10 +156,6 @@ public class HistoriaVidaAudioController {
         File folder =new File(filesPath);
         File filefolder =new File(filesPath);
 
-        for (final File file  :folder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
-
-        }
 
         if (filefolder!=null){
             for (HistoriaVidaAudio o:lista){
@@ -217,7 +194,6 @@ public class HistoriaVidaAudioController {
         List<HistoriaVidaAudio> lista = new ArrayList<HistoriaVidaAudio>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( HistoriaVidaAudio o:list){
             lista.add(list.get(lenght-aux));
             aux++;

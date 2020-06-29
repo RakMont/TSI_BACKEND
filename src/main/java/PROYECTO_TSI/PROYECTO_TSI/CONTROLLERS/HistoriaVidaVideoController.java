@@ -1,8 +1,6 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
-import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaTextoService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaVideoService;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

@@ -1,10 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.CONTROLLERS;
 
 
-import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.HistoriaVidaTextoService;
 import PROYECTO_TSI.PROYECTO_TSI.INTERFACES.TeOfrecemosService;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.TeOfrecemos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +21,10 @@ public class TeOfrecemosController {
     public List<TeOfrecemos> listarBecas() {
         List<TeOfrecemos>list=teOfrecemosService.listar();
         List<TeOfrecemos> lista = new ArrayList<TeOfrecemos>();
-        //List<TeOfrecemos>returnList=null;
         for( TeOfrecemos o:list){
             if(o.getTema().equals("Beca")){
                 lista.add(o);
             }
-            //System.out.println("date : "+o.getFecha());
         }
         return lista;
     }
@@ -43,7 +38,6 @@ public class TeOfrecemosController {
             if(o.getTema().equals("Trabajo")){
                 lista.add(o);
             }
-            //System.out.println("date : "+o.getFecha());
         }
         return lista;
 
@@ -53,12 +47,10 @@ public class TeOfrecemosController {
     public List<TeOfrecemos> listarViviendas() {
         List<TeOfrecemos>list=teOfrecemosService.listar();
         List<TeOfrecemos> lista = new ArrayList<TeOfrecemos>();
-        //List<TeOfrecemos>returnList=null;
         for( TeOfrecemos o:list){
             if(o.getTema().equals("Vivienda")){
                 lista.add(o);
             }
-            //System.out.println("date : "+o.getFecha());
         }
         return lista;
     }

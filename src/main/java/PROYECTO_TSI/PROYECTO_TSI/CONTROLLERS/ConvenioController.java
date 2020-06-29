@@ -38,7 +38,6 @@ public class ConvenioController {
     ServletContext context;
 
 
-
     @GetMapping(value = "/getConvenios")
     @CrossOrigin
     public ResponseEntity<List<String>> getConvenios() {
@@ -49,7 +48,6 @@ public class ConvenioController {
         List<Convenio> lista = new ArrayList<Convenio>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( Convenio o:list){
             lista.add(list.get(lenght-aux));
             aux++;
@@ -57,10 +55,7 @@ public class ConvenioController {
 
         ////////////////////////////////////////
         File filefolder =new File(filesPath);
-        for (final File file  :filefolder.listFiles()){
-            System.out.println("esto es la lista"+ file.getName());
 
-        }
         if (filefolder!=null){
             for (Convenio o:lista){
                 for (final File file:filefolder.listFiles()){
@@ -97,13 +92,11 @@ public class ConvenioController {
         List<Convenio> lista = new ArrayList<Convenio>();
         int aux=1;
         int lenght=list.size();
-        System.out.println("the size is"+lenght);
         for( Convenio o:list){
             lista.add(list.get(lenght-aux));
             aux++;
         }
         return lista;
-        //return convenioService.listar();
     }
 
     @PostMapping
@@ -120,12 +113,10 @@ public class ConvenioController {
         convenio1.setImagen(file.getOriginalFilename());
         boolean isExist = new java.io.File(context.getRealPath("/convenios/")).exists();
         if(!isExist){
-            System.out.println("creating directory");
             new java.io.File(context.getRealPath("/convenios/")).mkdir();
         }
         String filename = file.getOriginalFilename();
         String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-        //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
         File serverfile=new java.io.File(context.getRealPath("/convenios/"+ java.io.File.separator+modifiedFilename));
 
@@ -150,37 +141,27 @@ public class ConvenioController {
     @PostMapping(value = "UpdateConvenioFile")
     public ResponseEntity<Response> UpdateConvenioFile(@RequestParam("file") Optional<MultipartFile> file2, @RequestParam("convenio")String convenio)throws JsonParseException, JsonMappingException, IOException
     {
-        System.out.println("llega a la funcion");
         Convenio convenio1=new ObjectMapper().readValue(convenio,Convenio.class);
-        //System.out.println("llega a recibir los datos");
-        //System.out.println("nombre anteior"+convenio1.getImagen());
-       // System.out.println("nombre nuevo"+file.getOriginalFilename());
         if (file2.isPresent()){
             MultipartFile file=file2.get();
             if (convenio1.getImagen().equals(file.getOriginalFilename()))
             {
-                System.out.println("entra a imprimir el mismo");
                 convenioService.edit(convenio1);
                 return new ResponseEntity<Response>(new Response("Convenio saved succesfull"), HttpStatus.OK);
             }
             else{
-                System.out.println("entra a eliminar");
-
                 String auxiliar = convenio1.getImagen();
                 File fileToDelete = new File("src/main/webApp/convenios/"+auxiliar);
-                System.out.println("this is the name"+fileToDelete.getName());
                 fileToDelete.delete();
 
                 convenio1.setImagen(file.getOriginalFilename());
 
                 boolean isExist = new java.io.File(context.getRealPath("/convenios/")).exists();
                 if(!isExist){
-                    System.out.println("creating directory");
                     new java.io.File(context.getRealPath("/convenios/")).mkdir();
                 }
                 String filename = file.getOriginalFilename();
                 String modifiedFilename= FilenameUtils.getBaseName(filename)+"_"+System.currentTimeMillis()+"."+FilenameUtils.getExtension(filename);
-                //String modifiedFilename= FilenameUtils.getBaseName(filename)+"."+FilenameUtils.getExtension(filename);
 
                 File serverfile=new java.io.File(context.getRealPath("/convenios/"+ java.io.File.separator+modifiedFilename));
 
@@ -198,7 +179,6 @@ public class ConvenioController {
         }
         else
         {
-            System.out.println("no cambiaron nada");
             convenioService.edit(convenio1);
             return new ResponseEntity<Response>(new Response("Convenio saved succesfull"), HttpStatus.OK);
         }

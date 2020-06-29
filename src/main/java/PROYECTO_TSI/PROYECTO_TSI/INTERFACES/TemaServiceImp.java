@@ -2,9 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Tema;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.TemaRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.VisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

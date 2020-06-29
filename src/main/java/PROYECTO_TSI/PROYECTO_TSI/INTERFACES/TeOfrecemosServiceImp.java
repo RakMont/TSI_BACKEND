@@ -1,9 +1,7 @@
 package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Objetivos;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.TeOfrecemos;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.ObjetivosRepository;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.TeOfrecemosRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

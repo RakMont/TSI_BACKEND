@@ -2,9 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Comentario;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.ComentarioRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaTextoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

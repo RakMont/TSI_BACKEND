@@ -1,17 +1,11 @@
 package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaTexto;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaVideo;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaAudioRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.HistoriaVidaTextoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -22,9 +16,7 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
     @Override
     public List<HistoriaVidaAudio> listar(){
         List<HistoriaVidaAudio>list=historiaVidaAudioRepository.findAll();
-        /*for( HistoriaVidaAudio o:list){
-            System.out.println("date : "+o.getFecha());
-        }*/
+
         return historiaVidaAudioRepository.findAll();
     }
 
@@ -53,7 +45,6 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
         if (historiaVidaAudio!=null){
             if (fileToDelete.delete()){
                 historiaVidaAudioRepository.delete(historiaVidaAudio);
-                System.out.println("Se logro borrar la historia  ");
 
             }
         }

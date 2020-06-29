@@ -2,9 +2,7 @@ package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Convenio;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Evento;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.ConvenioRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.EventoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,16 +36,13 @@ public class ConvenioServiceImp implements ConvenioService {
 
     @Override
     public Convenio delete(int id){
-        System.out.println("this llega aqui");
         Convenio convenio=convenioRepository.findById(id);
-        System.out.println("this is the name"+convenio.getImagen());
 
         String auxiliar = convenio.getImagen();
         File fileToDelete = new File("src/main/webApp/convenios/"+auxiliar);
         if (convenio!=null){
             if (fileToDelete.delete()){
                 convenioRepository.delete(convenio);
-                System.out.println("Se borro el convenio");
             }
         }
 

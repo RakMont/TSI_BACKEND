@@ -1,12 +1,9 @@
 package PROYECTO_TSI.PROYECTO_TSI.INTERFACES;
 
 
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.HistoriaVidaAudio;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Podcast;
 import PROYECTO_TSI.PROYECTO_TSI.MODELS.Tema;
-import PROYECTO_TSI.PROYECTO_TSI.MODELS.Vision;
 import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.PodcastRepository;
-import PROYECTO_TSI.PROYECTO_TSI.REPOSITORIES.VisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,8 +51,6 @@ public class PodcastServiceImp implements PodcastService {
         if (podcast!=null){
             if (fileToDelete.delete()){
                 podcastRepository.delete(podcast);
-                System.out.println("Se logro borrar la historia  ");
-
             }
         }
         return podcast;
