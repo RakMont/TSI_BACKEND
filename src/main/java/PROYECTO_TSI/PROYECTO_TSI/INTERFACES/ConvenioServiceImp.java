@@ -41,9 +41,10 @@ public class ConvenioServiceImp implements ConvenioService {
         String auxiliar = convenio.getImagen();
         File fileToDelete = new File("src/main/webApp/convenios/"+auxiliar);
         if (convenio!=null){
-            if (fileToDelete.delete()){
-                convenioRepository.delete(convenio);
-            }
+            convenioRepository.delete(convenio);
+
+            fileToDelete.delete();
+
         }
 
         return convenio;

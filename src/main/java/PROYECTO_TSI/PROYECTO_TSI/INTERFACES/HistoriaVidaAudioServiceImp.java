@@ -41,12 +41,11 @@ public class HistoriaVidaAudioServiceImp implements HistoriaVidaAudioService{
 
         String auxiliar = historiaVidaAudio.getArchivo_mp3();
         File fileToDelete = new File("src/main/webApp/historiaHVA/"+auxiliar);
-
         if (historiaVidaAudio!=null){
-            if (fileToDelete.delete()){
-                historiaVidaAudioRepository.delete(historiaVidaAudio);
+            historiaVidaAudioRepository.delete(historiaVidaAudio);
+            fileToDelete.delete();
 
-            }
+
         }
         return historiaVidaAudio;
     }

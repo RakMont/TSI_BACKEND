@@ -49,9 +49,10 @@ public class PodcastServiceImp implements PodcastService {
         File fileToDelete = new File("src/main/webApp/podcasts/"+auxiliar);
 
         if (podcast!=null){
-            if (fileToDelete.delete()){
-                podcastRepository.delete(podcast);
-            }
+            podcastRepository.delete(podcast);
+
+            fileToDelete.delete();
+
         }
         return podcast;
     }
