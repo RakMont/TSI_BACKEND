@@ -235,6 +235,16 @@ public class ComentarioController {
     }
 
     ////////////////////////////////////////////////////////////////////
+    public List<String> getrole(Set<Role> role ){
+        Optional<Role> s;
+        Set<Role> brands;
+        List<String>roles=new ArrayList<>();
+        //Optional<User> user=userRepository.findByUsername(username);
+        brands=role;
+        s=brands.stream().findFirst();
+        roles.add(s.get().getName().toString());
+        return roles;
+    }
     /*list of users comentars on raw trabajo*/
     public List<User> listuserscomentTrabajo(){
         List<Comentario>list=comentarioService.listar();
@@ -252,6 +262,7 @@ public class ComentarioController {
             for (User u:list2){
                 if (u.getId()==c.getUser().getId()){
                     returnlist.add(u);
+
                 }
             }
 
@@ -582,27 +593,31 @@ public class ComentarioController {
     ///////////////////////////////////////////////////////////////////////////////////
     /*REFERENTE TRABAJO*/
 @GetMapping(path = {"/listComentariosRawTrabajo"})
-public List<Comentario> listComentariosRawTrabajo(){
+public List<ComentarioResponse> listComentariosRawTrabajo(){
     List<Comentario>list=comentarioService.listar();
-    List<Comentario>returnList= new ArrayList<Comentario>();
-
+    List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+    List<String> roles;
+    //ComentarioResponse comentarioResponse=new ComentarioResponse();
     for (Comentario c:list){
         if (c.getId_comentario_ref()==0 && c.getReferente()==1){
-            returnList.add(c);
+            roles=getrole(c.getUser().getRoles());
+            UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+            returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
         }
     }
     return returnList;
 }
-
     @GetMapping(path = {"/listComentariosTrabajo"})
-    public List<Comentario> listComentariosTrabajo(){
+    public List<ComentarioResponse> listComentariosTrabajo(){
         List<Comentario>list=comentarioService.listar();
-        List<Comentario>returnList= new ArrayList<Comentario>();
-
+        List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+        List<String> roles;
         for (Comentario c:list){
-            //System.out.println("size is "+ c.getComentario().length());
             if (c.getId_comentario_ref()!=0 && c.getReferente()==1){
-                returnList.add(c);
+                roles=getrole(c.getUser().getRoles());
+                UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+                returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
             }
         }
         return returnList;
@@ -613,56 +628,69 @@ public List<Comentario> listComentariosRawTrabajo(){
 // ///////////////////////////////////////////////////////////////////////////////
     /*REFERENTE VIVIENDA*/
 @GetMapping(path = {"/listComentariosRawVivienda"})
-public List<Comentario> listComentariosRawVivienda(){
+public List<ComentarioResponse> listComentariosRawVivienda(){
     List<Comentario>list=comentarioService.listar();
-    List<Comentario>returnList= new ArrayList<Comentario>();
-
+    List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+    List<String> roles;
     for (Comentario c:list){
         if (c.getId_comentario_ref()==0 && c.getReferente()==2){
-            returnList.add(c);
+            roles=getrole(c.getUser().getRoles());
+            UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+            returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
         }
     }
     return returnList;
 }
 
     @GetMapping(path = {"/listComentariosVivienda"})
-    public List<Comentario> listComentariosVivienda(){
+    public List<ComentarioResponse> listComentariosVivienda(){
         List<Comentario>list=comentarioService.listar();
-        List<Comentario>returnList= new ArrayList<Comentario>();
+        List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+        List<String> roles;
 
         for (Comentario c:list){
             if (c.getId_comentario_ref()!=0 && c.getReferente()==2){
-                returnList.add(c);
+                roles=getrole(c.getUser().getRoles());
+                UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+                returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
             }
         }
         return returnList;
     }
-
 ///////////////////////////////////////////////////////////////////////////////////
-
 // ///////////////////////////////////////////////////////////////////////////////
     /*REFERENTE EDUCACION*/
 @GetMapping(path = {"/listComentariosRawEducacion"})
-public List<Comentario> listComentariosRawEducacion(){
+public List<ComentarioResponse> listComentariosRawEducacion(){
     List<Comentario>list=comentarioService.listar();
-    List<Comentario>returnList= new ArrayList<Comentario>();
+    List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+    List<String> roles;
 
     for (Comentario c:list){
         if (c.getId_comentario_ref()==0 && c.getReferente()==3){
-            returnList.add(c);
+            roles=getrole(c.getUser().getRoles());
+            UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+            returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
         }
     }
     return returnList;
 }
 
     @GetMapping(path = {"/listComentariosEducacion"})
-    public List<Comentario> listComentariosEducacion(){
+    public List<ComentarioResponse> listComentariosEducacion(){
         List<Comentario>list=comentarioService.listar();
-        List<Comentario>returnList= new ArrayList<Comentario>();
+        List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+        List<String> roles;
 
         for (Comentario c:list){
             if (c.getId_comentario_ref()!=0 && c.getReferente()==3){
-                returnList.add(c);
+                roles=getrole(c.getUser().getRoles());
+                UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+                returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
             }
         }
         return returnList;
@@ -672,26 +700,33 @@ public List<Comentario> listComentariosRawEducacion(){
 
     /*REFERENTE SALUD*/
     @GetMapping(path = {"/listComentariosRawSalud"})
-    public List<Comentario> listComentariosRawSalud(){
+    public List<ComentarioResponse> listComentariosRawSalud(){
         List<Comentario>list=comentarioService.listar();
-        List<Comentario>returnList= new ArrayList<Comentario>();
+        List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+        List<String> roles;
 
         for (Comentario c:list){
             if (c.getId_comentario_ref()==0 && c.getReferente()==4){
-                returnList.add(c);
+                roles=getrole(c.getUser().getRoles());
+                UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+                returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
+
             }
         }
         return returnList;
     }
 
     @GetMapping(path = {"/listComentariosSalud"})
-    public List<Comentario> listComentariosSalud(){
+    public List<ComentarioResponse> listComentariosSalud(){
         List<Comentario>list=comentarioService.listar();
-        List<Comentario>returnList= new ArrayList<Comentario>();
+        List<ComentarioResponse>returnList= new ArrayList<ComentarioResponse>();
+        List<String> roles;
 
         for (Comentario c:list){
             if (c.getId_comentario_ref()!=0 && c.getReferente()==4){
-                returnList.add(c);
+                roles=getrole(c.getUser().getRoles());
+                UserProfileResponse user2=new UserProfileResponse(c.getUser().getId(),c.getUser().getUsername(),c.getUser().getEmail(),c.getUser().getPassword(),c.getUser().getNombre(),c.getUser().getApellido(),c.getUser().getFecha_nacimiento(),c.getUser().getTelefono(),c.getUser().getPerfil(),c.getUser().getGenero(),c.getUser().getLugar_acogida(),roles);
+                returnList.add(new ComentarioResponse(c.getId_comentario(),c.getComentario(),c.getFecha(),c.getId_comentario_ref(),c.getReferente(),user2));
             }
         }
         return returnList;

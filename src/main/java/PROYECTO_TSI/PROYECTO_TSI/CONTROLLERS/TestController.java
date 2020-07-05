@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.sql.Date;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -54,6 +55,32 @@ public class TestController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+
+    /*@GetMapping(path = {"/getprofile/{username}"})
+    public UserProfileResponse listarId(@PathVariable("username") String username) {
+        Optional<Role> s;
+        Set<Role> brands;
+        List<String>roles=new ArrayList<>();
+        Optional<User> user=userRepository.findByUsername(username);
+        brands=user.get().getRoles();
+        s=brands.stream().findFirst();
+        roles.add(s.get().getName().toString());
+        //System.out.println("roles"+roles.get(0));
+
+        UserProfileResponse userProfileResponse=new UserProfileResponse(user.get().getId(),user.get().getUsername(),user.get().getEmail(),user.get().getPassword(),user.get().getNombre(),user.get().getApellido(),user.get().getFecha_nacimiento(),user.get().getTelefono(),user.get().getPerfil(),user.get().getGenero(),user.get().getLugar_acogida(),roles);
+       return userProfileResponse;
+
+        // return userRepository.findByUsername(username);
+    }*/
+    @GetMapping(path = {"/getprofile/{username}"})
+    public Optional<User> listarId(@PathVariable("username") String username) {
+        //User user=
+        // Optional<User> user=userRepository.findByUsername(username);
+
+        return userRepository.findByUsername(username);
+    }
+
 
     @GetMapping(value = "/getModersPhotos")
     @CrossOrigin
@@ -418,13 +445,7 @@ public class TestController {
         return returnlist;
     }
 
-    @GetMapping(path = {"/getprofile/{username}"})
-    public Optional<User> listarId(@PathVariable("username") String username) {
-        //User user=
-       // Optional<User> user=userRepository.findByUsername(username);
 
-        return userRepository.findByUsername(username);
-    }
     @DeleteMapping(path = {"/deleteuser/{username}"})
     public User deleteuser(@PathVariable("username") String username) {
         Optional<User> user= userRepository.findByUsername(username);
